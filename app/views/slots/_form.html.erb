@@ -1,0 +1,42 @@
+<%= form_for(@slot) do |f| %>
+  <% if @slot.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@slot.errors.count, "error") %> prohibited this slot from being saved:</h2>
+
+      <ul>
+      <% @slot.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<fieldset>
+	<legend> Slot Details </legend>
+  <div style="display:none;">
+		<% if !params[:current_date].blank? %>
+    	<%= f.text_field :start_date, :value => Date.parse(params[:current_date]) %>
+		<% end %>
+	</div>
+	<div class="field">
+		<%= f.label :start_time %>
+		<br/>
+  	<%= f.time_select :start_time  %> 
+	</div>
+	<br/>
+	<div class="field">
+		<%= f.label :end_time %>
+		<br/>
+		<%= f.time_select :end_time %>
+	</div>
+	<br/>
+
+	<div class="field">
+		<%= f.label :required_shifts %>
+		<br/>
+		<%= f.text_field :required_shifts, :value => '0', :size => "5" %>
+	</div>
+</fieldset>
+<br />
+<%= f.submit %>
+<% end %>

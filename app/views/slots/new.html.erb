@@ -1,0 +1,13 @@
+<%= form_for(@slot) do |f| %>
+<h2> New Slot for 
+	<% if !params[:current_date].blank? %>
+ 		<%= label_tag :start_date, Date.parse(params[:current_date]).strftime("%A, %b %d %Y") %>
+	<% else %>
+   	<%= f.date_select :start_date %>
+	<% end %>
+</h2>
+
+<%= render 'form' %>
+<br />
+<%= link_to 'Back', :back %>
+<% end %>

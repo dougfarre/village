@@ -1,0 +1,6 @@
+<% form_tag(:action => 'create', :method => 'post', :multipart => true) do %>
+	Select CSV File:
+	<%= file_field_tag 'upload', 'datafile' %>
+	<br/><br/>
+	<%= submit_tag 'Upload' %>
+<% end %>

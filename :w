@@ -1,0 +1,45 @@
+<p>
+  <h2><%= "#{@area.name} Area at #{Village.get_name(@area.village_id)}" %></h2>
+</p>
+
+<p id="notice"><%= notice %></p>
+
+<%= link_to 'Edit Area', edit_area_path(@area) %> 
+<br/><br/>
+
+<fieldset>
+	<legend><h3>Time Slots</h3></legend>
+	<table style="width: 800px;">
+		<% i = 0 %>
+		<% while i < @num_days %> 
+			<tr>
+				<td>
+					<% current_date = @event.start_date + i %>
+					<%= "#{current_date.strftime("%A, %b %d %Y")}" %> 
+					<table id=<%= "table_#{current_date.strftime('%d%m'}" %>>
+						<tr>
+							<td>
+								<%= link_to 'New Slot', new_slot_path %>
+							</td>
+						</tr>	
+				</td>
+			</tr>
+		<% end %>
+	</table>
+
+		<% if !@slots.blank? %>
+			<% @slots.each do |slot| %>
+				<p>
+  				<b>Name:</b>
+  				<%= link_to  "#{slot.start_datetime} - #{slot.end_datetime}", slot_path(slot) %> | 
+					<%= link_to 'Edit', edit_slot_path(slot) %> |
+				</p>
+			<% end %>
+		<% else %>
+			<p> There are no Slots associated with this Area, please add one. </p>
+		<% end %>
+
+</fieldset>
+<br/>
+
+<%= link_to 'Back to Village', village_path(@area.village_id) %>

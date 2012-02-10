@@ -1,0 +1,75 @@
+<h2><%= "#{@event.name} Conference" %></h2>
+
+<p id="notice"><%= notice %></p>
+
+<%= link_to 'Edit Conference', edit_event_path(@event), :remote => true %>
+<br/><br/>
+
+<div class="page">
+<fieldset style="">
+ 	<legend><h3>Conference Details</h3></legend>
+	<br/>	
+ 	<b>Start date:</b>
+ 	<%= @event.start_date %>
+	<br/><br/>
+ 	<b>End date:</b>
+ 	<%= @event.end_date %>
+	<br/><br/>
+</fieldset>
+</div>
+<br/>
+
+<div style="float: left; width: 400px;">
+<fieldset style="min-height: 150px;">
+    <legend><h3>Villages</h3></legend>
+		<% if !@villages.blank? %>
+			<% @villages.each do |village| %>
+  				<b>Name:</b>
+  				<%= link_to  "#{village.name}", village_path(village) %> | 
+					<%= link_to 'Edit', edit_village_path(village), :remote => true %> |
+    			<%= link_to 'Destroy', village, confirm: 'Are you sure?', method: :delete %>
+					<br/>
+	
+			<% end %>
+			<% else %>
+				There are no Villages associated with this Conference, please add one.
+				<br/><br/>
+		<% end %>
+			</br>
+			<%= link_to "New Village", new_village_path(:event_id => @event.id), :remote => true %>
+</fieldset>
+</div>
+
+<div style="float: left; width: 400px; margin-left: 50px;">
+<fieldset style="min-height: 150px;">
+    <legend><h3>Volunteers</h3></legend>
+		<% if !@volunteers.blank? %>
+			<% @volunteers.each do |volunteer| %>
+  				<b>Name: </b>
+  				<%= link_to  "#{volunteer.first_name}", volunteer_path(volunteer) %> | 
+					<%= link_to 'Edit', edit_volunteer_path(volunteer) %> |
+    			<%= link_to 'Destroy', volunteer, confirm: 'Are you sure?', method: :delete %>
+					<br/>
+	
+			<% end %>
+			<% else %>
+				There are no Volunteers associated with this Conference, please add one.
+				<br/><br/>
+		<% end %>
+		<br/>
+			<%= link_to "New Volunteer", new_volunteer_path(:event_id => @event.id) %> | 
+			<%= link_to "Import Volunteers", '/upload#index', :remote => true %> | 
+			<%= link_to "Add Existing", new_volunteer_path(:event_id => @event.id) %>
+</fieldset>
+</div>
+<div style="clear: both;"></div>
+<br/><br/>
+<%= link_to 'Back to Conferences', events_path %>
+
+<div id="temp_area"></div>
+
+<script type="text/javascript">
+	$(document).ready( function () {
+		activate_ajax('Add/Update');
+	});
+</script>

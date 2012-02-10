@@ -1,0 +1,45 @@
+<h2>
+	<%= "#{@village.name} Village at #{Event.get_name(@village.event_id)}" %>
+</h2>
+
+<p id="notice"><%= notice %></p>
+
+<%= link_to 'Edit Village', edit_village_path(@village), :remote => true %> 
+<br/><br/>
+
+	<fieldset>
+    <legend><h3>Areas</h3></legend>
+		<br/>
+		<% if !@areas.blank? %>
+			<% i = 0 %>
+			<% @areas.each do |area| %>
+				<% i += 1 %>
+  				<b><%= "Area #{i}:" %></b>
+  				<%= link_to  "#{area.name}", area_path(area) %> | 
+					<%= link_to 'Edit', edit_area_path(area), :remote => true %> |
+    			<%= link_to 'Destroy', area, confirm: 'Are you sure?', method: :delete %>
+					<br/>
+		<% end %>
+		<% else %>
+			There are no Areas associated with this Village, please add one.
+			<br/>
+		<% end %>
+
+		<p>
+			<%= link_to "New Area", 
+					new_area_path(:village_id => @village.id),
+					:remote => true 
+					%>
+		</p>
+	</fieldset>
+
+<br/>
+<%= link_to 'Back to Conference', event_path(@village.event_id) %>
+
+<div id="temp_area"></div>
+
+<script type="text/javascript">
+	$(document).ready( function () {
+		activate_ajax('Add/Update');
+	});
+</script>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vms</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+	<%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" %>
+  <%= stylesheet_link_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/cupertino/jquery-ui.css" %>	
+  <%= csrf_meta_tags %>
+	<%= stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Magra' %> 
+</head>
+<body>
+<div id="header" style="width:;">
+	<div style="width:; float: left; padding-left: 10%;">
+		<h1>Village Management System</h1>
+	</div>
+	<div style="float: right; width: 38%; padding-right: 50px;">
+		<%= image_tag "cougar2.png", :size => "300x100" %>
+	</div>
+	<div style="clear: both;"></div>
+</div>
+<div id="container">
+  <%= yield %>
+</div>
+<div id="footer">
+	<div style="position: absolute; top: 25%; left: 35%;">
+		<table style=>
+			<tr>
+				<td style="background-color: transparent !important; padding-right: 20px; padding-left: 20px;"> 
+					&copy; 2012 CougarWare Software Development 
+				</td>
+			</tr> 
+		</table>
+	</div>
+</div>
+
+</body>
+</html>

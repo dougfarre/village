@@ -1,0 +1,58 @@
+<p>
+  <h2><%= "#{@area.name} Area at #{Village.get_name(@area.village_id)} Village" %></h2>
+</p>
+
+<p id="notice"><%= notice %></p>
+
+<%= link_to 'Edit Area', edit_area_path(@area), :remote => true %> 
+<br/><br/>
+
+<fieldset>
+	<legend><h3>Time Slots</h3></legend>
+	<div class="area">
+		<% t_width = (730/(@num_days + 1)).to_i %>
+		<div class="area_row">
+			<% (0 .. @num_days).each do |i| %> 
+				<% current_date = @event.start_date + i %>
+				<% current_date_s = current_date.strftime("%A, %b %d %Y") %>
+				<% current_slot = ActiveSupport::JSON.decode(@slots_array[i]) %>
+				<div class="area_slots" style="width: <%= t_width %>px;">
+					<%= "#{current_date_s}" %> 
+					<ol style="margin-left: -20px;">
+						<% current_slot.each do |slot| %>
+							<% start_t = Time.parse(slot['start_time']).strftime("%I:%M%p") %>
+							<% end_t = Time.parse(slot['end_time']).strftime("%I:%M%p") %>
+							<% s_id = slot['id'] %>
+							<li>
+								<%= link_to "#{start_t} to #{end_t}", edit_slot_path(s_id) %>
+							</li>
+						<% end %>
+						<li>
+							<%= link_to 'New Slot', 
+									new_slot_path(:current_date => current_date, 
+									:area_id => @area.id) %>
+						</li>
+					</ol>
+				</div>
+			<% end %>
+		</div>
+	</div>
+</fieldset>
+
+<br/>
+
+<%= link_to 'Back to Village', village_path(@area.village_id) %>
+
+<script style="text/javascript">
+	$(document).ready( function() {
+		activate_ajax("Update/Add");
+	});
+	
+	function addSlot(caller) {
+		var name = $(caller).attr('name');
+		var $new_slot = $('#new_slot').clone();
+		$new_slot.attr("display", "inline");
+		$(caller).after($new_slot);
+		$new_slot.find('*').first.val(<%= %> + name);
+	}
+</script>

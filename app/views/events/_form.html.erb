@@ -1,0 +1,91 @@
+<%= stylesheet_link_tag 'formtastic', 'my_formtastic_changes' %>
+<%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" %>
+<%= stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Magra' %> 
+<%= stylesheet_link_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/cupertino/jquery-ui.css" %>	
+<%= javascript_include_tag 'application' %>
+
+<%= semantic_form_for(@event) do |f| %>
+  <% if @event.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
+
+      <ul>
+      <% @event.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+ <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+		<%= f.input :start_date, :as => :date %>
+	
+  </div>
+  <div class="field">
+		<%= f.input :end_date, :as => :date %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		// Define the dateFormat for the datepicker
+	  $.datepicker._defaults.dateFormat = 'dd M yy';
+
+	  /**
+	  * Replaces the date or datetime field with jquey-ui datepicker
+		*/
+
+		$('.date, .datetime').each(function(i, el) {
+	 		var input = document.createElement('input');
+	 		$(input).attr({'type': 'text', 'class': 'ui-date-text'});
+	 		// Insert the input:text before the first select
+	 		$(el).find("select:first").before(input);
+			$(el).find("select:lt(3)").hide();
+			// Set the input with the value of the selects
+			var values = [];
+
+			$(el).find("select:lt(3)").each(function(i, el) {
+    		var val = $(el).val();
+    		if(val != '')
+   			values.push(val);
+	 		});
+
+  		if( values.length > 1) {
+  			d = new Date(values[0], parseInt(values[1]) - 1, values[2]);
+ 				$(input).val( $.datepicker.formatDate($.datepicker._defaults.dateFormat, d) );
+ 			}
+
+			$(input).datepicker();
+  	});
+
+		/**
+		 * Sets the date for each select with the date selected with datepicker
+		 */
+		$('input.ui-date-text').live("change", function() {
+	 		var sels = $(this).closest('.date, .datetime').find("select:lt(3)");
+			var d = $.datepicker.parseDate($.datepicker._defaults.dateFormat, $(this).val() );
+			$(sels[0]).val(d.getFullYear());
+			$(sels[1]).val(d.getMonth() + 1);
+	 		$(sels[2]).val(d.getDate());
+	 	});
+
+	 	/*$('input.ui-datepicker').datepicker();
+		//$('#event_end_date').datepicker({ disabled: true });
+		$('#event_start_date').datepicker({
+			onClose: function(dateText, inst) {
+				if ($('#event_start_date').text != "") { 
+					$('#event_end_date').datepicker( "option", "minDate", new Date ($('#event_start_date').text) );
+					//$('#event_end_date').datepicker();
+				}
+			}
+		});*/	
+	});
+</script>
+ 

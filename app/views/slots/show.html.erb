@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Start date:</b>
+  <%= @slot.start_date.strftime("%A, %b %d %Y") %>
+</p>
+
+<p>
+  <b>Start time:</b>
+  <%= @slot.start_time.strftime("%I:%M%p") %>
+</p>
+
+<p>
+  <b>End time:</b>
+  <%= @slot.end_time.strftime("%I:%M%p") %>
+</p>
+
+<p>
+  <b>Required shifts:</b>
+  <%= @slot.required_shifts %>
+</p>
+<%= link_to 'Edit Slot', edit_slot_path(@slot) %> |
+<%= link_to 'Back to Area', area_path(@slot.area_id) %>
