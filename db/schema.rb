@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120208183629) do
+ActiveRecord::Schema.define(:version => 20120215220125) do
 
   create_table "areas", :force => true do |t|
     t.string   "name"
@@ -21,6 +21,20 @@ ActiveRecord::Schema.define(:version => 20120208183629) do
   end
 
   add_index "areas", ["village_id"], :name => "index_areas_on_village_id"
+
+  create_table "areas_volunteer_events", :id => false, :force => true do |t|
+    t.integer "area_id"
+    t.integer "volunteer_event_id"
+  end
+
+  create_table "avails", :force => true do |t|
+    t.integer  "volunteer_event_id"
+    t.date     "event_date"
+    t.time     "start_time"
+    t.time     "end_time"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
 
   create_table "calendar_events", :force => true do |t|
     t.string   "name"
@@ -39,18 +53,47 @@ ActiveRecord::Schema.define(:version => 20120208183629) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "data_files", :force => true do |t|
+    t.string   "filename"
+    t.string   "content_type"
+    t.binary   "data"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.integer  "attachable_id"
+    t.string   "attachable_type"
+  end
+
   create_table "events", :force => true do |t|
     t.string   "name"
     t.date     "start_date"
     t.date     "end_date"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "user_id"
   end
 
   create_table "events_volunteers", :id => false, :force => true do |t|
     t.integer "event_id"
     t.integer "volunteer_id"
   end
+
+  create_table "installs", :force => true do |t|
+    t.string   "email",                                 :default => "", :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",                         :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at",                                            :null => false
+    t.datetime "updated_at",                                            :null => false
+  end
+
+  add_index "installs", ["email"], :name => "index_installs_on_email", :unique => true
+  add_index "installs", ["reset_password_token"], :name => "index_installs_on_reset_password_token", :unique => true
 
   create_table "shifts", :force => true do |t|
     t.string   "title"
@@ -79,6 +122,24 @@ ActiveRecord::Schema.define(:version => 20120208183629) do
   add_index "slots", ["area_id"], :name => "index_slots_on_area_id"
   add_index "slots", ["village_id"], :name => "index_slots_on_village_id"
 
+  create_table "users", :force => true do |t|
+    t.string   "email",                  :default => "", :null => false
+    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+  end
+
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+
   create_table "villages", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
@@ -87,6 +148,14 @@ ActiveRecord::Schema.define(:version => 20120208183629) do
   end
 
   add_index "villages", ["event_id"], :name => "index_villages_on_event_id"
+
+  create_table "volunteer_events", :force => true do |t|
+    t.integer  "event_id"
+    t.integer  "volunteer_id"
+    t.integer  "required_shifts"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
   create_table "volunteers", :force => true do |t|
     t.string   "first_name"
@@ -101,6 +170,7 @@ ActiveRecord::Schema.define(:version => 20120208183629) do
     t.string   "level"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.integer  "user_id"
   end
 
 end

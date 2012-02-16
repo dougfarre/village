@@ -1,8 +1,42 @@
 <h1>Editing slot</h1>
 
-<%= render 'form' %>
+<div style="float: left; width: 400px;">
+	<%= render 'form' %>
+</div>
 
-<!--
-<%= link_to 'Show', @slot %> |
-<%= link_to 'Back', slots_path %>
--->
+<div style="float: left; width: 400px; margin-left: 50px;">
+	<fieldset>
+    <legend>Shifts</legend>
+		<br/>
+		<% if !@shifts.blank? %>
+			<% i = 0 %>
+			<% @shifts.each do |shift| %>
+				<% i += 1 %>
+  				<b><%= "Shift #{i}:" %></b>
+					<%= form_for(shift) do |s| %>
+  					<%= s.text_field  :title %> | 
+						<%= s.collection_select(:volunteer_id, @volunteers, :id, :nick_name) %> | 
+						<%= s.submit 'Update' %> 
+						<br/>
+    				<%= link_to 'Destroy', shift, confirm: 'Are you sure?', method: :delete %>
+					<% end %>
+					<br/>
+		<% end %>
+		<% end %>
+		<% if @slot.required_shifts > @shifts.length %>
+			<span><b>! You still need to add <u><%= @slot.required_shifts - @shifts.length %></u> slot(s) to meet the slot's requirement!</b>
+		<%end %>
+		<p>
+			<%= link_to "New Shift", new_shift_path(:slot_id => @slot.id), :remote => true %> | 
+			<%= link_to "Import Shift List", import_shift_function_path(:id => @slot.id) %>
+		</p>
+	</fieldset>
+</div> 
+
+<div id="temp_area"></div>
+
+<script type="text/javascript">
+	$(document).ready( function () {
+		activate_ajax('Add/Update');
+	});
+</script>

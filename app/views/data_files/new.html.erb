@@ -1,0 +1,6 @@
+<%= form_for(@file, :html => {:multipart => true} ) do |f| %>
+	<span>Select CSV File:</span>
+	<%= f.file_field :filename %>
+	<br/><br/>
+	<%= f.submit 'Upload' %>
+<% end %>

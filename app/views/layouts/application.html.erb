@@ -12,15 +12,30 @@
 <body>
 <div id="header" style="width:;">
 	<div style="width:; float: left; padding-left: 10%;">
-		<h1>Village Management System</h1>
+		<h1><%= link_to "Village Management System", events_path %></h1>
 	</div>
 	<div style="float: right; width: 38%; padding-right: 50px;">
 		<%= image_tag "cougar2.png", :size => "300x100" %>
+		<div style="float: right; padding-right: -50px;">
+			<br/>
+			<% if user_signed_in? %>
+				<span> Signed in as <%= current_user.email %></span><br/>
+				<span> 
+					Not you? <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
+				</span>
+			<% else %>
+				<span> 
+					<%= link_to "Sign up", new_user_registration_path %> or 
+					<%= link_to "Sign in", new_user_session_path %></span>
+			<% end %>
+		</div>
 	</div>
-	<div style="clear: both;"></div>
+		<div style="clear: both;"></div>
 </div>
 <div id="container">
   <%= yield %>
+	<p class="notice"><%= notice %></p>
+	<p class="alert"><%= alert %></p>
 </div>
 <div id="footer">
 	<div style="position: absolute; top: 25%; left: 35%;">

@@ -14,6 +14,8 @@ class ShiftsController < ApplicationController
   # GET /shifts/1.json
   def show
     @shift = Shift.find(params[:id])
+		@volunteers = @shift.slot.area.village.event.volunteers
+		# @slots = Slot.find(:all, :conditions => {:area_id => @area.id})
 
     respond_to do |format|
       format.html # show.html.erb
@@ -25,9 +27,12 @@ class ShiftsController < ApplicationController
   # GET /shifts/new.json
   def new
     @shift = Shift.new
+		@slot = Slot.find(params[:slot_id])
+		@volunteers = @slot.area.village.event.volunteers
+		@shift.update_attributes(:slot_id => @slot.id)
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html { render :layout => false } # new.html.erb
       format.json { render json: @shift }
     end
   end
@@ -60,7 +65,7 @@ class ShiftsController < ApplicationController
 
     respond_to do |format|
       if @shift.update_attributes(params[:shift])
-        format.html { redirect_to @shift, notice: 'Shift was successfully updated.' }
+        format.html { redirect_to edit_slot_path(@shift.slot_id), notice: 'Shift was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -76,7 +81,7 @@ class ShiftsController < ApplicationController
     @shift.destroy
 
     respond_to do |format|
-      format.html { redirect_to shifts_url }
+      format.html { redirect_to edit_slot_path(@shift.slot_id) }
       format.json { head :no_content }
     end
   end

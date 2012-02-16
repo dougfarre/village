@@ -6,7 +6,8 @@
 
 <%= link_to 'Edit Village', edit_village_path(@village), :remote => true %> 
 <br/><br/>
-
+<div class="area"><div class="area_row">
+	<div class="area_cells">
 	<fieldset>
     <legend><h3>Areas</h3></legend>
 		<br/>
@@ -32,7 +33,18 @@
 					%>
 		</p>
 	</fieldset>
-
+	</div>
+	<div class="area_cells" style="width: 50px;"></div>
+	<div class="area_cells">
+		<fieldset>
+			<legend><h3>Admin Functions</h3></legend>
+				<%= link_to 'Send Volunteer registration request by email', %> <br />
+				<%= link_to 'Update Volunteers by email', %> <br />
+				<%= link_to 'Export Volunteers list by csv', %> <br /> 
+				<%= link_to "Public link to this Village's master schedule",  %> <br /> 
+		</fieldset>
+	</div>
+</div></div>
 <br/>
 <%= link_to 'Back to Conference', event_path(@village.event_id) %>
 

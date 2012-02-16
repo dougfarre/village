@@ -28,9 +28,7 @@
 							</li>
 						<% end %>
 						<li>
-							<%= link_to 'New Slot', 
-									new_slot_path(:current_date => current_date, 
-									:area_id => @area.id) %>
+							<%= link_to 'New Slot', new_slot_path(:current_date => current_date, :area_id => @area.id) %> <!-- :remote => true %> -->
 						</li>
 					</ol>
 				</div>
@@ -43,16 +41,10 @@
 
 <%= link_to 'Back to Village', village_path(@area.village_id) %>
 
+<div id="temp_area"></div>
+
 <script style="text/javascript">
 	$(document).ready( function() {
 		activate_ajax("Update/Add");
 	});
-	
-	function addSlot(caller) {
-		var name = $(caller).attr('name');
-		var $new_slot = $('#new_slot').clone();
-		$new_slot.attr("display", "inline");
-		$(caller).after($new_slot);
-		$new_slot.find('*').first.val(<%= %> + name);
-	}
 </script>

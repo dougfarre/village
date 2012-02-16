@@ -12,9 +12,15 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :title %><br />
+    <%= f.label :title, "Shift Title (e.g. shift-leader)" %><br />
     <%= f.text_field :title %>
   </div>
+		
+  <div class="field">
+    <%= label_tag "Volunteer Nick Name" %><br />
+		<%= f.collection_select(:volunteer_id, @volunteers, :id, :nick_name) %> 
+	</div>
+	<br />
   <div class="actions">
     <%= f.submit %>
   </div>

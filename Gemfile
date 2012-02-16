@@ -14,6 +14,10 @@ gem 'event-calendar', :require => 'event_calendar'
 gem 'calendar_date_select', :git => 'git://github.com/paneq/calendar_date_select.git'
 gem 'formtastic'
 gem 'csv-mapper'
+gem 'carrierwave'
+gem 'nested_form'
+gem 'devise'
+gem "remotipart"
 
 # Gems used only for assets and not required
 # in production environments by default.

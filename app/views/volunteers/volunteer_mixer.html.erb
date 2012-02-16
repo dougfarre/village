@@ -1,0 +1,15 @@
+<%= form_tag(save_volunteers_path) do %>
+	<% if !@volunteers.blank? %>
+		<h3> Select Volunteers to add to this Conference </h3>
+		<% @volunteers.each do |volunteer| %>
+			<% display = "#{volunteer.first_name} #{volunteer.last_name} (#{volunteer.nick_name})" %>
+			<%= check_box_tag 'volunteers[]', volunteer.id %> 
+			<%= label_tag 'volunteer', "#{display}" %>		
+			<br/>
+		<% end %>
+		<br />
+		<%= button_tag "Add Volunteer(s)" %>
+	<% else %>
+		<span> There are no volunteers in the database! </span>
+	<% end %>	
+<% end %>

@@ -1,5 +1,12 @@
 Vms::Application.routes.draw do
-  match '/calendar_event(/:year(/:month))' => 'calendar_event#index', :as => :calendar_event, :constraints => {:year => /\d{4}/, :month => /\d{1,2}/}
+  devise_for :users
+
+	match '/slots/import_shifts_function', :to => 'slots#import_shift_function', :as => 'import_shift_function'
+
+	match '/volunteers/volunteer_mixer', :to => 'volunteers#volunteer_mixer', :as => 'volunteer_mixer'
+	match '/volunteers/save_volunteers', :to => 'volunteers#save_volunteers', :as => 'save_volunteers'
+  
+	match '/calendar_event(/:year(/:month))' => 'calendar_event#index', :as => :calendar_event, :constraints => {:year => /\d{4}/, :month => /\d{1,2}/}
 
   resources :volunteers
 
@@ -9,7 +16,7 @@ Vms::Application.routes.draw do
 
   resources :areas
 
-	resources :upload
+	resources :data_files
 
   resources :events do
   	resources :villages do
@@ -17,10 +24,10 @@ Vms::Application.routes.draw do
 		end
 	end
 
-	resources :villages do
-		resources :areas
-	end
-
+  	resources :villages do
+			resources :areas
+		end
+	
   # get "home/index"
 
   # The priority is based upon order of creation:
@@ -72,7 +79,7 @@ Vms::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => 'events#index'
+  root :to => 'home#index'
 
   # See how all your routes lay out with "rake routes"
 

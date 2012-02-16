@@ -14,7 +14,7 @@ class SlotsController < ApplicationController
   # GET /slots/1.json
   def show
     @slot = Slot.find(params[:id])
-		#@shifts = Shift.find(:all, :conditions => {:slot_id => @slot.id})
+		@shifts = Shift.find(:all, :conditions => {:slot_id => @slot.id})
 
     #respond_to do |format|
     #  format.html # show.html.erb
@@ -40,6 +40,8 @@ class SlotsController < ApplicationController
   # GET /slots/1/edit
   def edit
     @slot = Slot.find(params[:id])
+		@shifts = Shift.find(:all, :conditions => {:slot_id => @slot.id})
+		@volunteers = @slot.area.village.event.volunteers
   end
 
   # POST /slots
@@ -59,6 +61,15 @@ class SlotsController < ApplicationController
     end
   end
 
+	def import_shift_function
+		slot = Slot.find(params[:id])
+		slot.import_shift_list
+
+		#respond_to do |format|
+			#format.html {redirect_to edit_slot_path(slot.id)}
+			redirect_to edit_slot_path(slot.id)
+		#end
+	end
   # PUT /slots/1
   # PUT /slots/1.json
   def update

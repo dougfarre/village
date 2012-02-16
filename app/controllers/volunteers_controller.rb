@@ -1,4 +1,26 @@
 class VolunteersController < ApplicationController
+
+	def volunteer_mixer
+		@event = Event.find(params[:event_id])
+		@volunteers = Volunteer.find(:all)
+		session[:event_id] = @event.id	
+
+		respond_to do |format|
+			format.html
+		end
+	end
+
+	def save_volunteers
+		event = Event.find(session[:event_id])
+		event.volunteer_ids = params[:volunteers] + event.volunteer_ids
+		event.save
+
+		respond_to do |format|
+      format.html { redirect_to event_path(event.id) }
+      format.json { head :no_content }
+    end
+	end
+
   # GET /volunteers
   # GET /volunteers.json
   def index
@@ -26,9 +48,7 @@ class VolunteersController < ApplicationController
   def new
 		@event_id = params[:event_id]
 		session[:stored_event_id] = @event_id
-		# @volunteer = event.volunteers.build()
     @volunteer = Volunteer.new
-		# @volunteer.event_ids << params[:event_id].to_i
 
     respond_to do |format|
       format.html # new.html.erb
@@ -45,13 +65,14 @@ class VolunteersController < ApplicationController
   # POST /volunteers.json
   def create
 		@event = Event.find(session[:stored_event_id].to_i)
+		session[:stored_event_id] = @event.id
     @volunteer = Volunteer.new(params[:volunteer])
 		@event.volunteers << @volunteer	
 
     respond_to do |format|
 
-		      if @volunteer.save
-        format.html { redirect_to @volunteer, notice: 'Volunteer was successfully created.' }
+      if @volunteer.save
+        format.html { redirect_to event_path(@event), notice: 'Volunteer was successfully created.' }
         format.json { render json: @volunteer, status: :created, location: @volunteer }
 
       else
@@ -64,11 +85,12 @@ class VolunteersController < ApplicationController
   # PUT /volunteers/1
   # PUT /volunteers/1.json
   def update
+		event_id = session[:stored_event_id]
     @volunteer = Volunteer.find(params[:id])
 
     respond_to do |format|
       if @volunteer.update_attributes(params[:volunteer])
-        format.html { redirect_to @volunteer, notice: 'Volunteer was successfully updated.' }
+        format.html { redirect_to event_path(event_id), notice: 'Volunteer was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -84,7 +106,7 @@ class VolunteersController < ApplicationController
     @volunteer.destroy
 
     respond_to do |format|
-      format.html { redirect_to volunteers_url }
+      format.html { redirect_to event_path(session[:event_id]) }
       format.json { head :no_content }
     end
   end

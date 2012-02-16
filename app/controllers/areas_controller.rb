@@ -27,7 +27,6 @@ class AreasController < ApplicationController
 			temp = Slot.find(:all, :conditions => {:area_id => @area.id, :start_date => @event.start_date + i})
 
 			@slots_array << (j.encode(temp))
-			puts @slots_array
 		end		
 
 		respond_to do |format|

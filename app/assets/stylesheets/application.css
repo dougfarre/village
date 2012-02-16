@@ -68,7 +68,7 @@ body {
 
 .area {
 	display: table;
-	width: 800px;
+	width: 850px;
 }
 
 .area_row {
@@ -78,6 +78,11 @@ body {
 .page {
 	width: 850px;
 }
+
+.area_cells {
+	display: table-cell;
+	width: 400px;
+}	
 
 .area_slots {
 	display: table-cell;

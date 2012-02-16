@@ -1,3 +1,4 @@
+<div class="page">
 <br/>
 <fieldset>
 	<legend><h3>Conference Schedule</h3></legend>
@@ -17,7 +18,7 @@
     	<td><%= event.end_date %></td>
     	<td>
 				<%= link_to 'Show', event %>
-    		<%= link_to 'Edit', edit_event_path(event) %>
+    		<%= link_to 'Edit', edit_event_path(event), :remote => true %>
     		<%= link_to 'Destroy', event, confirm: 'Are you sure?', method: :delete %>
   	</tr>
 	<% end %>
@@ -27,7 +28,7 @@
 
 	<%= link_to 'New Conference', new_event_path, :remote => true %>
 </fieldset>
-
+</div>
 <div id="temp_area"></div>
 
 <script type="text/javascript">

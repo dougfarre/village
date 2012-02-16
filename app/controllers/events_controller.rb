@@ -2,7 +2,7 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
-    @events = Event.all
+    @events = Event.find(:all, :conditions => {:user_id => current_user.id})
 
     respond_to do |format|
       format.html # index.html.erb
@@ -14,6 +14,7 @@ class EventsController < ApplicationController
   # GET /events/1.json
   def show
     @event = Event.find(params[:id])
+		session[:event_id] = @event.id
 		@villages = Village.find(:all, :conditions => {:event_id => @event.id})
 		@volunteers = @event.volunteers
 
@@ -44,6 +45,7 @@ class EventsController < ApplicationController
   # POST /events.json
   def create
     @event = Event.new(params[:event])
+		@event.update_attributes(:user_id => current_user.id)
 
     respond_to do |format|
       if @event.save
