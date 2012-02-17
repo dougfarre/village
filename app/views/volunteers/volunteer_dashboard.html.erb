@@ -1,0 +1,48 @@
+<h2>Volunteer Dashboard</h3>
+
+<div class="area">
+	<div class="area_row">
+		<div class="area_cells">
+			<fieldset>
+				<legend><h3>Event Manager</h3></legend>
+					<% if !@events.blank? %>
+						<span>
+							<b>Select event below to enter your availability.</b>
+						</span>
+						<br/><br/>
+						<% @events.each do |event| %>
+							<% display = "#{event.name} on #{event.start_date}" %>
+							<%= link_to display, availability_path(:event_id => event.id) %>
+							<br/>
+						<% end %>	<br />
+					<% else %>
+						<span> You do not have any events, input Event ID below. </span>
+						<br/><br/>
+					<% end %>	
+					<%= form_tag(associate_event_path) do %>
+						<%= label :event_id, 'Enter new event id here: ' %>
+						<%= number_field_tag :event_id %>
+						<%= button_tag "Associate Event" %>
+					<% end %>
+			</fieldset>
+		</div> <!-- area_cells -->
+
+		<div style="width: 50px;"></div>
+		
+		<div class="area_cells">
+			<fieldset>
+				<legend><h3>Account Manager</h3></legend>
+				<%= link_to 'Volunteer Information', 
+										volunteer_path(@volunteer) %>	
+				<br/>
+			</fieldset>
+		</div>
+	</div> <!-- area_row -->
+</div> <!-- area -->
+<div id="temp_area"></div>
+
+<script style="text/javascript">
+	$(document).ready( function() {
+		activate_ajax("Update/Add");
+	});
+</script>

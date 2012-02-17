@@ -1,0 +1,2 @@
+module AvailsHelper
+end

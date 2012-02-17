@@ -2,13 +2,22 @@ Vms::Application.routes.draw do
   devise_for :users
 
 	match '/slots/import_shifts_function', :to => 'slots#import_shift_function', :as => 'import_shift_function'
+	
+	match '/volunteers/volunteer_dashboard', :to => 'volunteers#volunteer_dashboard', :as => 'volunteer_dashboard'
+	
+	match '/volunteers/associate_event', :to => 'volunteers#associate_event', :as => 'associate_event' 
 
 	match '/volunteers/volunteer_mixer', :to => 'volunteers#volunteer_mixer', :as => 'volunteer_mixer'
+
 	match '/volunteers/save_volunteers', :to => 'volunteers#save_volunteers', :as => 'save_volunteers'
+
+	match '/volunteers/availability', :to => 'volunteers#availability', :as => 'availability' 
   
 	match '/calendar_event(/:year(/:month))' => 'calendar_event#index', :as => :calendar_event, :constraints => {:year => /\d{4}/, :month => /\d{1,2}/}
 
   resources :volunteers
+
+  resources :avails
 
   resources :shifts
 
