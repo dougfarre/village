@@ -1,4 +1,4 @@
-<%= stylesheet_link_tag 'formtastic', 'my_formtastic_changes' %>
+<%= stylesheet_link_tag 'formtastic' %>
 <%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" %>
 <%= stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Magra' %> 
 <%= stylesheet_link_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/cupertino/jquery-ui.css" %>	
@@ -6,8 +6,8 @@
 
 <%= semantic_form_for @avail do |f| %>
   <%= f.inputs do %>
-		<%= f.input :start_time %>
-		<%= f.input :end_time %>
+		<%= f.input :start_time, :required => true, :minute_step => 5 %>
+		<%= f.input :end_time, :required => true, :minute_step => 5 %>
   <% end %>
 
   <%= f.buttons do %>

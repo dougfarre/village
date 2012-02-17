@@ -94,6 +94,10 @@ GEM
       activesupport (= 3.2.0.rc1)
       bundler (~> 1.0)
       railties (= 3.2.0.rc1)
+    rails-erd (0.4.5)
+      activerecord (~> 3.0)
+      activesupport (~> 3.0)
+      ruby-graphviz (~> 0.9.18)
     railties (3.2.0.rc1)
       actionpack (= 3.2.0.rc1)
       activesupport (= 3.2.0.rc1)
@@ -105,6 +109,7 @@ GEM
     rdoc (3.12)
       json (~> 1.4)
     remotipart (1.0.2)
+    ruby-graphviz (0.9.21)
     sass (3.1.15)
     sass-rails (3.2.3)
       railties (~> 3.2.0.beta)
@@ -144,6 +149,7 @@ DEPENDENCIES
   jquery-rails
   nested_form
   rails (= 3.2.0.rc1)
+  rails-erd
   remotipart
   sass-rails (~> 3.2.0)
   sqlite3

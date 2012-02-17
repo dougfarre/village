@@ -3,8 +3,9 @@ class VolunteersController < ApplicationController
 	def availability
 		@volunteer = current_user.volunteer
 		@event = Event.find(params[:event_id])
-		@avails = @volunteer.volunteer_events.find(:first,
-							:conditions => {:event_id => @event.id}).avails
+		@volunteer_event = @volunteer.volunteer_events.find(:first,
+												:conditions => {:event_id => @event.id})
+		@avails = @volunteer_event.avails
 
 		@villages = @event.villages
 		@num_days = (@event.end_date - @event.start_date).to_i

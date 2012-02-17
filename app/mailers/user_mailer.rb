@@ -1,6 +1,6 @@
 class UserMailer < ActionMailer::Base
   #default from: "from@example.com"
-
+=begin
 	def registration_alert(organizer, email, event)
 		recipients	email 
 		from				'Village Organizer <#{organizer.email}>'
@@ -24,4 +24,5 @@ class UserMailer < ActionMailer::Base
 		sent_on			Time.now
 		body				{:event_id => event_id, :url => 'http://usdos.us/users/sign_in'}	
 	end
+=end
 end

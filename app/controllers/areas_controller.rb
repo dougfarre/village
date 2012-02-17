@@ -1,14 +1,17 @@
 class AreasController < ApplicationController
-  # GET /areas
-  # GET /areas.json
-  def index
-    @areas = Area.all
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @areas }
-    end
-  end
+
+	def get_areas
+		@volunteer_event = VolunteerEvent.find(params[:volunteer_event_id])
+		village = Village.find(params[:village_id])
+		@areas = village.areas
+		temp_s = ''
+	
+		respond_to do |format|
+			format.html { render :layout => false } 
+		end
+	end
+
 
   # GET /areas/1
   # GET /areas/1.json

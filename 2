@@ -4,9 +4,6 @@
 
 <p id="notice"><%= notice %></p>
 
-<%= form_tag(save_volunteers_to_area_path) do %>
-<%= hidden_field_tag :volunteer_event_id, @volunteer_event.id %>
-<%= hidden_field_tag :event_id, @event.id %>
 <div class="page">
 <fieldset>
 	<legend><h3>Time Slots</h3></legend>
@@ -16,10 +13,9 @@
 			<% @villages.each do |village| %>
 				<div class="local">
   		  <% display = "#{village.name} Village" %>
-				<% is_checked = @volunteer_event.event.villages.include? village %>
-				<%= check_box_tag 'villages[]', village.id, is_checked %> 
-				<%= label_tag 'village', "#{display}" %>
-				<span class="local_toggle"></span>
+				<%= check_box_tag 'villages[]', village.id, false %> 
+				<%= label_tag 'village', "#{display}" %>		
+				<div class="local_toggle"></div>
 				<br/>
 				</div>
 			<% end %>
@@ -54,11 +50,7 @@
 		</div>
 	</div>
 </fieldset>
-<br/>
-<%= button_tag "Submit Availability" %>
-<br/>
-<span>(You can change your availability all the way up untill the day before the conference)</span> 
-<% end %>
+
 <br/>
 
 <div id="temp_area"></div>
@@ -67,31 +59,11 @@
 	$(document).ready( function() {
 		activate_ajax("Update/Add");
 
-		$(':checkbox').change( function (e) {
-			if ($(e.target).is(':checked') == true) {
-				get_areas(this);
-			} 
-			else {
-				var $div = $(this).siblings('.local_toggle');
-				$div.hide();
-			}
-		});
-
-		$(':checkbox').each(function () {
+		$(':checkbox').change( function () {
 			if ($(this).is(':checked') == true) {
-				get_areas(this);
+				$(this).closest('.local').children('.local_toggle').html('lol!');
+
 			}
 		});
 	});
-
-	function get_areas(caller) {
-		var $div = $(caller).siblings('.local_toggle');
-		var url_string = '/areas/get_areas?village_id=' + $(caller).attr('value') + '&volunteer_event_id=' + $('#volunteer_event_id').val();
-		$.get(url_string, function (data) {
-			$div.html(' -> ' + data);
-		});
-		$div.show();
-	}
-
 </script>
-

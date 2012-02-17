@@ -12,7 +12,11 @@ Vms::Application.routes.draw do
 	match '/volunteers/save_volunteers', :to => 'volunteers#save_volunteers', :as => 'save_volunteers'
 
 	match '/volunteers/availability', :to => 'volunteers#availability', :as => 'availability' 
-  
+
+	match '/avails/save_volunteers_to_area', :to => 'avails#save_volunteers_to_area', :as => 'save_volunteers_to_area' 
+
+	match '/areas/get_areas', :to => 'areas#get_areas', :as => 'get_areas'
+	  
 	match '/calendar_event(/:year(/:month))' => 'calendar_event#index', :as => :calendar_event, :constraints => {:year => /\d{4}/, :month => /\d{1,2}/}
 
   resources :volunteers
