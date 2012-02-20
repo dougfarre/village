@@ -25,7 +25,7 @@ body {
 
 #header {
 	/*font-family: 'Tenor Sans', sans-serif; */
-	position: fixed;
+	position: absolute;
 	left: 0;
 	top: 0;
 	height: 4em;
@@ -45,16 +45,14 @@ body {
 	min-height: 100%;
  	background-color: #CCCCCC;
 	padding: 1px 5px 4em 5px;
- 	margin: auto;
+ 	margin: auto auto -50px auto;
 	overflow: scroll;
 }
 
 #footer {
   background-repeat: repeat-x;
-  position: fixed;
+  position: absolute;
   width: 100%;
-	bottom: 0;
- 	left: 0; 
 	height: 4em;
 	background: #a90329;
 	background: -moz-linear-gradient(top,  #a90329 0%, #8f0222 44%, #6d0019 100%);
@@ -74,6 +72,13 @@ body {
 .area_row {
 	display: table-row;
 }
+
+.volunteer {
+	display: table;
+	width: 850px;
+	font-size: 12px;
+}
+
 
 .page {
 	width: 850px;
@@ -98,3 +103,11 @@ body {
 	text-align: right;*/
 }
 
+.white {
+	color: white;
+}
+
+a:link {color: #000000; text-decoration: underline; }
+a:active {color: #0000ff; text-decoration: underline; }
+a:visited {color: #000000; text-decoration: underline; }
+a:hover {color: #ff0000; text-decoration: none; }

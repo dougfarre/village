@@ -44,27 +44,57 @@
 <br/>
 
 <div class="page">
-<fieldset style="min-height: 150px;">
+	<fieldset style="min-height: 150px;">
     <legend><h3>Volunteers</h3></legend>
-		<% if !@volunteers.blank? %>
-			<% @volunteers.each do |volunteer| %>
-				<% display = "#{volunteer.first_name} #{volunteer.last_name} (#{volunteer.nick_name})" %>
-  				<b>Name: </b>
-  				<%= link_to  "#{display}", volunteer_path(volunteer) %> | 
-					<%= link_to 'Edit', edit_volunteer_path(volunteer) %> |
-    			<%= link_to 'Destroy', volunteer, confirm: 'Are you sure?', method: :delete %>
-					<br/>
-	
-			<% end %>
-			<% else %>
-				There are no Volunteers associated with this Conference, please add one.
-				<br/><br/>
-		<% end %>
+		<% if !@volunteer_events.blank? %>
+			<div class="volunteer">
+				<div class="area_row">
+				<div class="area_cells" ><b>Email</b></div>
+				<div class="area_cells"><b>Registerd?</b></div>
+				<div class="area_cells"><b>Availability Entered?</b></div>
+				<div class="area_cells"><b>Name</b></div>
+				<div class="area_cells"><b>Phone</b></div>
+				<div class="area_cells"><b>Required Shifts</b></div>
+			</div>
+
+				<% @volunteer_events.each do |volunteer_e| %>
+					<div class="area_row">
+						<% volunteer = volunteer_e.volunteer %>
+						<% unless volunteer.blank? %>
+							<% display = "#{volunteer.first_name} #{volunteer.last_name} (#{volunteer.nick_name})" %>
+							<div class="area_cells">
+								<%= volunteer.email %>
+								<%= link_to 'Edit', edit_volunteer_path(volunteer) %> |
+    						<%= link_to 'Remove', unassociate_event_path(:event_id => @event.id, :volunteer_id => volunteer.id), confirm: 'Are you sure?' %>
+							</div>
+							<div class="area_cells">Yes</div>
+							<div class="area_cells">-</div>
+							<div class="area_cells"><%= display %></div>
+							<div class="area_cells"><%= volunteer.phone %></div>
+							<div class="area_cells"><%= volunteer_e.required_shifts %></div>
+						<% else %>
+							<div class="area_cells">
+								<%= volunteer_e.email %>
+    						<%= link_to 'Remove', unassociate_event_path(:event_id => @event.id, :volunteer_e => volunteer_e.id), confirm: 'Are you sure?' %>
+							</div>
+							<div class="area_cells">No</div>
+							<div class="area_cells">No</div>
+							<div class="area_cells">-</div>
+							<div class="area_cells">-</div>
+							<div class="area_cells">-</div>
+						<% end %>
+					</div> <!-- end row -->
+				<% end %>
+			</div> <!-- end volunteer -->
+				<% else %>
+					<span>There are no Volunteers associated with this Conference, please add one.</span>
+					<br/><br/>
+				<% end %>
 		<br/>
-			<%= link_to "New Volunteer", new_volunteer_path(:event_id => @event.id) %> | 
-			<%= link_to "Import Volunteers", new_data_file_path(:event_id => @event.id), :remote => true %> | 
+			<!-- <%= link_to "New Volunteer", new_volunteer_path(:event_id => @event.id) %> | -->
+			<!-- <%= link_to "Import Volunteers", new_data_file_path(:event_id => @event.id), :remote => true %> | -->
 			<%= link_to "Add Existing", volunteer_mixer_path(:event_id => @event.id) %> | 
-			<%= link_to "Send Email Invites", volunteer_mixer_path(:event_id => @event.id) %> | 
+			<%= link_to "Send Email Invites", volunteer_invite_path(:event_id => @event.id), :remote => true %> | 
 			<%= link_to "Send Email Updates", volunteer_mixer_path(:event_id => @event.id) %>
 </fieldset>
 </div>

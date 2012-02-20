@@ -16,6 +16,7 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
 		session[:event_id] = @event.id
 		@villages = Village.find(:all, :conditions => {:event_id => @event.id})
+		@volunteer_events = VolunteerEvent.find(:all, :conditions => {:event_id => @event.id})
 		@volunteers = @event.volunteers
 
     respond_to do |format|

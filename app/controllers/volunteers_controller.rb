@@ -72,7 +72,85 @@ class VolunteersController < ApplicationController
     end
 	end
 
+	def unassociate_event
+		event = Event.find(params[:event_id].to_i)
+
+		begin
+			volunteer = Volunteer.find(params[:volunteer_id].to_i)
+			volunteer_event = VolunteerEvent.find(:first, :conditions => {:event_id => event.id, :volunteer_id => volunteer.id})
+			volunteer_event.destroy
+
+		rescue
+			volunteer_event = VolunteerEvent.find(params[:volunteer_e])
+			volunteer_event.destroy
+		end
+
+		respond_to do |format|
+      format.html { redirect_to :back }
+      format.json { head :no_content }
+    end
+	end
+
+	
+	def volunteer_invite
+		session[:event_id] = params[:event_id]
+
+		respond_to do |format|
+			format.html {render :layout => false }
+		end
+	end
+
+
+	def save_volunteer_invite
+		begin
+			event = Event.find(session[:event_id])
+			emails = params[:emails].split(",").map(&:strip).reject(&:empty?)
+
+			emails.each do |email|
+				volunteer = Volunteer.find(:first, :conditions => {:email => email})
+			
+				#volunteer does not exist
+				if volunteer.blank?
+					v_event = VolunteerEvent.new(:event_id => event.id, :email => email)
+					v_event.save
+					UserMailer.registration_alert(email, event).deliver
+				#volunteer exists
+				else 
+					v_event = VolunteerEvent.find(:first,	
+																				:conditions => {:event_id => event.id,
+																	    	:volunteer_id => volunteer.id})
+					#volutneer event does not exist	
+					if v_event.blank?
+						volunteer.events << event
+						volunteer.save
+						UserMailer.add_alert(volunteer, event).deliver
+					#volunteer does exist
+					else 
+						puts "#{volunteer.email} already exists"
+					end
+				end
+			end #end of emails.each
+
+			respond_to do |format|
+      	format.html { redirect_to event_path(session[:event_id]), 
+											:notice => "Volunteers have been invited." }
+      	format.json { head :no_content }
+    	end
+
+		rescue
+			respond_to do |format|
+      	format.html { redirect_to :back, 
+											:notice => "Save failed, incorrect format." }
+      	format.json { head :no_content }
+    	end
+		end
+	end
+
+
   # GET /volunteers
+
+
+
   # GET /volunteers.json
 =begin
   def index

@@ -1,0 +1,8 @@
+<p><b>Enter volunteer emails separated by commas.</b></p>
+
+<%= form_tag(save_volunteer_invite_path) do %>
+	<%= text_area_tag :emails, nil, :rows => 5, :cols => 50 %>
+	<br/>
+	<%= button_tag 'Submit' %>
+
+<% end %>

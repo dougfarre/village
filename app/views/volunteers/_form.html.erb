@@ -30,7 +30,7 @@
   		</div>
   		<div class="area_slots">
     		<%= f.label :email %><br />
-    		<%= f.email_field :email %>
+    		<%= f.email_field :email, :value => current_user.email %>
 			</div>
 		</div>
 		<div style="clear: both;" />

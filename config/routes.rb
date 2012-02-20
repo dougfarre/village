@@ -2,6 +2,12 @@ Vms::Application.routes.draw do
   devise_for :users
 
 	match '/slots/import_shifts_function', :to => 'slots#import_shift_function', :as => 'import_shift_function'
+
+	match '/volunteers/unassociate_event', :to => 'volunteers#unassociate_event', :as => 'unassociate_event'
+	
+	match '/volunteers/volunteer_invite', :to => 'volunteers#volunteer_invite', :as => 'volunteer_invite'
+
+	match '/volunteers/save_volunteer_invite', :to => 'volunteers#save_volunteer_invite', :as => 'save_volunteer_invite'
 	
 	match '/volunteers/volunteer_dashboard', :to => 'volunteers#volunteer_dashboard', :as => 'volunteer_dashboard'
 	

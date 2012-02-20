@@ -19,6 +19,7 @@ gem 'nested_form'
 gem 'devise'
 gem "remotipart"
 gem 'rails-erd'
+gem 'sendgrid'
 
 # Gems used only for assets and not required
 # in production environments by default.
