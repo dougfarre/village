@@ -29,11 +29,13 @@ class EventsController < ApplicationController
 			end
 		elsif params[:commit] == "Send Email Alerts"
 			session[:volunteer_event_ids] = volunteer_event_ids 
-			redirect_to volunteer_emailer_path(:medium => 'email', :event_id => event.id)	
+			session[:medium] = 'email'
+			redirect_to volunteer_emailer_path(:event_id => event.id)	
 			return
 		elsif params[:commit] == "Send SMS Alerts"
 			session[:volunteer_event_ids] = volunteer_event_ids 
-			redirect_to volunteer_emailer_path(:medium => 'sms', :event_id => event.id)	
+			session[:medium] = 'sms'
+			redirect_to volunteer_emailer_path(:event_id => event.id)	
 			return
 		end
 

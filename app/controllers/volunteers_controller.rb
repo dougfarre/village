@@ -2,7 +2,7 @@ class VolunteersController < ApplicationController
 
 	def emailer
 		@event = Event.find(params[:event_id])
-		@medium = params[:medium]
+		@medium = session[:medium]
 		session[:event_id] = @event.id
 		session[:medium] = @medium 
 		session[:volutneer_event_ids] = session[:volunteer_event_ids]
@@ -15,7 +15,7 @@ class VolunteersController < ApplicationController
 	end
 	
 	def send_emailer
-		medium = params[:medium]
+		medium = session[:medium]
 		message = params[:message]
 		subject = params[:subject]
 		volunteer_event_ids = session[:volunteer_event_ids]
@@ -24,7 +24,7 @@ class VolunteersController < ApplicationController
 			volunteer_event_ids.each do |volunteer_event_id|
 				begin
 					volunteer_event = VolunteerEvent.find(volunteer_event_id)
-					UserMailer.aux_alert(volunteer_event.get_email, message, subject).deliver!
+					UserMailer.aux_alert(volunteer_event.get_email, message, subject).deliver
 				rescue
 				end
 			end
@@ -174,7 +174,7 @@ class VolunteersController < ApplicationController
 					if v_event.blank?
 						volunteer.events << event
 						volunteer.save
-						UserMailer.add_alert(volunteer, event).deliver
+						UserMailer.add_alert(volunteer, event).deliver!
 					#volunteer does exist
 					else 
 						puts "#{volunteer.email} already exists"

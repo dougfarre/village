@@ -1,6 +1,5 @@
 <%= form_tag(volunteer_send_emailer_path) do %>
 	<h3> Create Email Message </h3>
-	<%= hidden_field_tag :is_email, 'true' %>
 	<% unless @volunteer_event_ids.blank? %>
 					<span> Send the following volunteers an update:
 						<% @volunteer_event_ids.each do |volunteer_event_id| %>
