@@ -6,7 +6,7 @@
 
 <div style="float: left; width: 400px; margin-left: 50px;">
 	<fieldset>
-    <legend>Shifts</legend>
+    <legend><h3>Shifts</h3></legend>
 		<br/>
 		<% if !@shifts.blank? %>
 			<% i = 0 %>
@@ -32,6 +32,9 @@
 		</p>
 	</fieldset>
 </div> 
+<br/>
+<div style="clear: both;"></div>
+<%= link_to 'Back to Areas', village_path(@slot.area.village.id) %>
 
 <div id="temp_area"></div>
 

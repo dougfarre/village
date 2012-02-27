@@ -1,0 +1,24 @@
+<%= form_tag(volunteer_send_emailer_path) do %>
+	<h3> Create Email Message </h3>
+	<%= hidden_field_tag :is_email, 'true' %>
+	<% unless @volunteer_event_ids.blank? %>
+					<span> Send the following volunteers an update:
+						<% @volunteer_event_ids.each do |volunteer_event_id| %>
+							<% volunteer_event = VolunteerEvent.find(volunteer_event_id) %>
+							<% display = "#{volunteer_event.get_email}" %>
+							<%= label_tag 'volunteer', "#{display} | " %>
+						<% end %>
+					</span>
+					<p>Subject: <%= text_field_tag 'subject' %>
+					<p>Message:
+						<br/>
+						<%= text_area_tag 'message', nil, :rows => 5, :cols => 75 %>
+					</p>
+		<br/>
+		<%= button_tag "Send Alerts" %>
+	<% else %>
+		<span> There are no volunteers selected! </span>
+	<% end %>	
+<% end %>
+<br/>
+<%= link_to 'Back', event_path(@event.id) %>

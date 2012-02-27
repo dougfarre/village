@@ -12,7 +12,7 @@
   <% end %>
 
 <fieldset>
-	<legend> Slot Details </legend>
+	<legend><h3>Slot Details</h3></legend>
   <div style="display:none;">
 		<% if !params[:current_date].blank? %>
     	<%= f.text_field :start_date, :value => Date.parse(params[:current_date]) %>
@@ -36,7 +36,8 @@
 		<br/>
 		<%= f.text_field :required_shifts, :size => "5" %>
 	</div>
+	<br/>
+	<%= f.submit %>
 </fieldset>
 <br />
-<%= f.submit %>
 <% end %>

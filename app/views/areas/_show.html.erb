@@ -6,7 +6,7 @@
  			<legend><h3><%= "Area #{i}: #{area.name}" %></h3></legend>
 			<%= link_to 'Edit', edit_area_path(area), :remote => true %> |
  			<%= link_to 'Destroy', area, confirm: 'Are you sure?', method: :delete %>
-			<br/>
+			<br/><br/>
 			<div class="area">
 				<% slots_array = area.slots_array %>
 				<% num_days = area.num_days %>

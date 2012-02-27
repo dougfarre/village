@@ -9,12 +9,12 @@ class EventsController < ApplicationController
 				volunteer_event = VolunteerEvent.find(volunteer_event_id)
 				volunteer_event.destroy
 			end
-		else
+		elsif params[:commit] == "Save" 
 			area_ids = params[:areas]		
 			volunteer_event_ids.each do |volunteer_event_id|
 				volunteer_event = VolunteerEvent.find(volunteer_event_id)
 				volunteer = volunteer_event.volunteer
-				
+				shifts = params['shift_' + volunteer_event.id.to_s] 	
 				new_areas = Array.new()
 
 				area_ids.each do |area_id|
@@ -22,17 +22,25 @@ class EventsController < ApplicationController
 						new_areas.push(area_id.split('_')[1])		
 					end
 				end
-						
+
+				volunteer_event.required_shifts = shifts	
 				volunteer_event.area_ids = new_areas 
 				volunteer_event.save!
 			end
+		elsif params[:commit] == "Send Email Alerts"
+			session[:volunteer_event_ids] = volunteer_event_ids 
+			redirect_to volunteer_emailer_path(:medium => 'email', :event_id => event.id)	
+			return
+		elsif params[:commit] == "Send SMS Alerts"
+			session[:volunteer_event_ids] = volunteer_event_ids 
+			redirect_to volunteer_emailer_path(:medium => 'sms', :event_id => event.id)	
+			return
 		end
 
 		respond_to do |format|
       format.html { redirect_to :back }
       format.json { head :no_content }
     end
-
 	end
 
   # GET /events

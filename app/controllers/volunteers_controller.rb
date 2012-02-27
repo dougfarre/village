@@ -1,5 +1,46 @@
 class VolunteersController < ApplicationController
 
+	def emailer
+		@event = Event.find(params[:event_id])
+		@medium = params[:medium]
+		session[:event_id] = @event.id
+		session[:medium] = @medium 
+		session[:volutneer_event_ids] = session[:volunteer_event_ids]
+		@volunteer_event_ids = session[:volunteer_event_ids]
+
+		respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @area }
+    end
+	end
+	
+	def send_emailer
+		medium = params[:medium]
+		message = params[:message]
+		subject = params[:subject]
+		volunteer_event_ids = session[:volunteer_event_ids]
+
+		if medium == 'email'
+			volunteer_event_ids.each do |volunteer_event_id|
+				begin
+					volunteer_event = VolunteerEvent.find(volunteer_event_id)
+					UserMailer.aux_alert(volunteer_event.get_email, message, subject).deliver!
+				rescue
+				end
+			end
+		else
+			volunteer_event_ids.each do |volunteer_event_id|
+				volunteer_event = VolunteerEvent.find(volunteer_event_id)
+				if volunteer_event.has_volunteer
+					volunteer_event.volunteer.send_sms_message(message)
+				end
+			end
+		end
+
+		redirect_to event_path(session[:event_id], :notice => "Email updates sent!")	
+	end 
+
+
 	def availability
 		@volunteer = current_user.volunteer
 		@event = Event.find(params[:event_id])

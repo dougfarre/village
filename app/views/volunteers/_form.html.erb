@@ -30,7 +30,11 @@
   		</div>
   		<div class="area_slots">
     		<%= f.label :email %><br />
-    		<%= f.email_field :email, :value => current_user.email %>
+				<% if @volunteer.email %>
+    			<%= f.email_field :email, :value => @volunteer.email %>
+				<% else %>
+    			<%= f.email_field :email, :value => current_user.email %>
+				<% end %>
 			</div>
 		</div>
 		<div style="clear: both;" />

@@ -12,6 +12,11 @@
  *= require_tree .
 */
 
+.inner {
+	width: 300px;
+	margin: 0px auto 0px auto;
+}
+
 html {
 	height: 100%;
 	font-family: 'Magra', sans-serif;

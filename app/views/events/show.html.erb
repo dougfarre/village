@@ -105,7 +105,7 @@
 
 							<div class="generic_slots"> <!-- shifts -->
 								<% unless is_blank %>
-									<%= number_field_tag 'shift_' + volunteer_e.id , volunteer_e.id.to_s + '_' + volunteer_e.required_shifts.to_s, :in => 1...10, :size => 2, :disabled => true %>
+									<%= number_field_tag 'shift_' + volunteer_e.id.to_s , volunteer_e.required_shifts, :in => 1...10, :size => 2, :disabled => true %>
 								<% else %>
 									-
 								<% end %>
@@ -129,16 +129,20 @@
 				<br/><br/>
 			<% end %>
 			<br/>
-
-			<div style="float: left;">
-				<%= hidden_field_tag :event_id, @event.id %>
-				<%= submit_tag "Save" %>  
-				<%= submit_tag "Remove", :confirm => "Are you sure you want to remove these user(s)?" %> 
-			</div>
-			<div style="float: right;">
-				<%= link_to "Add Existing", volunteer_mixer_path(:event_id => @event.id) %> | 
-				<%= link_to "Send Email Invites", volunteer_invite_path(:event_id => @event.id), :remote => true %> | 
-				<%= link_to "Send Email Updates", volunteer_mixer_path(:event_id => @event.id) %>
+			<div>
+				<div style="float: left;">
+					<%= hidden_field_tag :event_id, @event.id %>
+					<%= submit_tag "Save" %>  
+					<%= submit_tag "Remove", :confirm => "Are you sure you want to remove these user(s)?" %> 
+				</div>
+				<div style="margin-left: 100px; float: left;">
+					<%= link_to "Add Existing Volunteers", volunteer_mixer_path(:event_id => @event.id) %> | 
+					<%= link_to "Send Email Invites", volunteer_invite_path(:event_id => @event.id), :remote => true %> 
+				</div>
+				<div style="float: right;">
+					<%= submit_tag "Send Email Alerts" %>
+					<%= submit_tag "Send SMS Alerts" %>
+				</div>
 			</div>
 			<div style="clear: both;"></div>
 		</fieldset>

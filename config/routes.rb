@@ -6,6 +6,10 @@ Vms::Application.routes.draw do
 	match '/events/maintain', :to => 'events#maintain', :as => 'maintain'
 
 	match '/volunteers/unassociate_event', :to => 'volunteers#unassociate_event', :as => 'unassociate_event'
+
+	match '/volunteers/emailer', :to => 'volunteers#emailer', :as => 'volunteer_emailer' 
+
+	match '/volunteers/send_emailer', :to => 'volunteers#send_emailer', :as => 'volunteer_send_emailer' 
 	
 	match '/volunteers/volunteer_invite', :to => 'volunteers#volunteer_invite', :as => 'volunteer_invite'
 

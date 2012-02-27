@@ -57,4 +57,13 @@ class UserMailer < ActionMailer::Base
 	end	
 
 
+	def aux_alert(email, message, subject)
+		@message = message
+
+		mail( :to => email,
+					:from => "vsmmater@udsos.us",
+          :subject => subject) do |format|
+      format.html
+		end
+	end
 end
