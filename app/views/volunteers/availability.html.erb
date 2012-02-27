@@ -2,8 +2,6 @@
   <h2><%= "Availability for #{@volunteer.nick_name} at #{@event.name} on #{@event.start_date}" %></h2>
 </p>
 
-<p id="notice"><%= notice %></p>
-
 <%= form_tag(save_volunteers_to_area_path) do %>
 <%= hidden_field_tag :volunteer_event_id, @volunteer_event.id %>
 <%= hidden_field_tag :event_id, @event.id %>

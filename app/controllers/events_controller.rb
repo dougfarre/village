@@ -1,4 +1,40 @@
 class EventsController < ApplicationController
+
+	def maintain
+		event = Event.find(params[:event_id])
+		volunteer_event_ids = params[:selected_volunteers]
+
+		if params[:commit] == "Remove" 
+			volunteer_event_ids.each do |volunteer_event_id|
+				volunteer_event = VolunteerEvent.find(volunteer_event_id)
+				volunteer_event.destroy
+			end
+		else
+			area_ids = params[:areas]		
+			volunteer_event_ids.each do |volunteer_event_id|
+				volunteer_event = VolunteerEvent.find(volunteer_event_id)
+				volunteer = volunteer_event.volunteer
+				
+				new_areas = Array.new()
+
+				area_ids.each do |area_id|
+					unless area_id.scan(volunteer_event_id.to_s + '_').blank?	
+						new_areas.push(area_id.split('_')[1])		
+					end
+				end
+						
+				volunteer_event.area_ids = new_areas 
+				volunteer_event.save!
+			end
+		end
+
+		respond_to do |format|
+      format.html { redirect_to :back }
+      format.json { head :no_content }
+    end
+
+	end
+
   # GET /events
   # GET /events.json
   def index

@@ -1,0 +1,15 @@
+Your shift is scheduled to start soon: 
+<p>
+	<b>Event: <%= @shift.slot.area.village.event.name %> 
+		</br/>
+		 Village: <%= @shift.slot.area.village.name %>
+		<br/>
+		 Area: <%= @shift.slot.area.name %>
+		<br/>
+		 Slot: <%= f_time(@shift.slot.start_time) %> to <% f_time(@shift.slot.end_time) %>
+		<br/>
+		 Role: <%= @shift.title %>
+	 </b>
+</p>
+
+Thanks!

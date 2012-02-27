@@ -1,0 +1,44 @@
+<% i = 0 %>
+<% areas.each do |area| %>
+	<% i += 1 %>
+	<div class="page">
+		<fieldset>
+ 			<legend><h3><%= "Area #{i}: #{area.name}" %></h3></legend>
+			<%= link_to 'Edit', edit_area_path(area), :remote => true %> |
+ 			<%= link_to 'Destroy', area, confirm: 'Are you sure?', method: :delete %>
+			<br/>
+			<div class="area">
+				<% slots_array = area.slots_array %>
+				<% num_days = area.num_days %>
+				<% t_width = (730/(num_days + 1)).to_i %>
+				<div class="area_row">
+					<% (0 .. num_days).each do |i| %> 
+						<% current_date = area.village.event.start_date + i %>
+						<% current_date_s = current_date.strftime("%A, %b %d %Y") %>
+						<% current_slot = ActiveSupport::JSON.decode(slots_array[i]) %>
+						<div class="area_slots" style="width: <%= t_width %>px;">
+							<%= "#{current_date_s}" %> 
+							<ol style="margin-left: -20px;">
+								<% current_slot.each do |slot| %>
+									<% start_t = Time.parse(slot['start_time']).strftime("%I:%M%p") %>
+									<% end_t = Time.parse(slot['end_time']).strftime("%I:%M%p") %>
+									<% s_id = slot['id'] %>
+									<li>
+										<%= link_to "#{start_t} to #{end_t}", edit_slot_path(s_id) %>
+									</li>
+								<% end %>
+								<li>
+									<%= link_to 'New Slot', new_slot_path(:current_date => current_date, :area_id => area.id) %>
+								</li>
+							</ol>
+						</div>
+					<% end %>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+<% end %>
+
+	
+
+

@@ -48,7 +48,15 @@ class VolunteersController < ApplicationController
 
 	def save_volunteers
 		event = Event.find(session[:event_id])
-		event.volunteer_ids = params[:volunteers] + event.volunteer_ids
+
+		params[:volunteers].each do |new_volunteer_id|	
+			if !(event.volunteer_ids.include? new_volunteer_id.to_i)
+				new_volunteer = Volunteer.find(new_volunteer_id.to_i) 
+		 		event.volunteers << new_volunteer
+				UserMailer.add_alert(new_volunteer, event).deliver!
+			end
+		end
+
 		event.save
 
 		respond_to do |format|
@@ -111,9 +119,11 @@ class VolunteersController < ApplicationController
 			
 				#volunteer does not exist
 				if volunteer.blank?
-					v_event = VolunteerEvent.new(:event_id => event.id, :email => email)
-					v_event.save
-					UserMailer.registration_alert(email, event).deliver
+					unless VolunteerEvent.exists?(:email => email, :event_id => event.id)
+						v_event = VolunteerEvent.new(:event_id => event.id, :email => email)
+						v_event.save
+						UserMailer.registration_alert(email, event).deliver
+					end
 				#volunteer exists
 				else 
 					v_event = VolunteerEvent.find(:first,	
@@ -179,7 +189,7 @@ class VolunteersController < ApplicationController
   def new
 		if current_user.user_type == 'organizer'
 			@event_id = params[:event_id]
-			session[:stored_event_id] = @event_id
+			session[:event_id] = @event_id
     	@volunteer = Volunteer.new
 		else
     	@volunteer = Volunteer.new
@@ -200,8 +210,8 @@ class VolunteersController < ApplicationController
   # POST /volunteers.json
   def create
 		if current_user.user_type == 'organizer'
-			session[:stored_event_id] = @event.id
-			@event = Event.find(session[:stored_event_id].to_i)
+			session[:event_id] = @event.id
+			@event = Event.find(session[:event_id].to_i)
     	@volunteer = Volunteer.new(params[:volunteer])
 			@event.volunteers << @volunteer	
 
@@ -221,28 +231,26 @@ class VolunteersController < ApplicationController
 		else
     	@volunteer = Volunteer.new(params[:volunteer])
 			@volunteer.user = current_user
+      @volunteer.save
 
+			v_events = VolunteerEvent.find(:all, :conditions => {:email => @volunteer.email})
+			v_events.each do |v_event|
+				v_event.volunteer = @volunteer
+				v_event.save
+			end
     	respond_to do |format|
-      	if @volunteer.save
-        	format.html { redirect_to volunteer_dashboard_path ,
-												notice: 'Your information was successfully created.' }
-        	format.json { render json: @volunteer, 
-												status: :created, 
-												location: @volunteer }
-      	else
-        	format.html { render action: "new" }
-        	format.json { render json: @volunteer.errors, 
-												status: :unprocessable_entity }
-      	end
+       	format.html { redirect_to volunteer_dashboard_path ,
+											notice: 'Your information was successfully created.' }
+       	format.json { render json: @volunteer, status: :created, 
+											location: @volunteer }
     	end
-
 		end
   end
 
   # PUT /volunteers/1
   # PUT /volunteers/1.json
   def update
-		event_id = session[:stored_event_id]
+		event_id = session[:event_id]
     @volunteer = Volunteer.find(params[:id])
 
     respond_to do |format|

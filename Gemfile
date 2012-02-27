@@ -20,6 +20,9 @@ gem 'devise'
 gem "remotipart"
 gem 'rails-erd'
 gem 'sendgrid'
+gem 'whenever'
+#gem 'time-diff'
+gem 'twilio-ruby'
 
 # Gems used only for assets and not required
 # in production environments by default.

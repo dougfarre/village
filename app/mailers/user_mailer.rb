@@ -33,26 +33,28 @@ class UserMailer < ActionMailer::Base
 		@url = 'http://usdos.us/users/sign_in'
 
 		mail( :to => @volunteer.email,
-          :subject => @event.name + ': important update' do |format|
+          :subject => @event.name + ': important update') do |format|
       format.html
     end
 	end
 
+	def shift_alert(shift)
+		@shift = shift
 
-	def add_alert (organizer, email, event)
-		recipients	email 
-		from				'Village Organizer <#{organizer.email}>'
-		subject			'You have been signed up to volunteer'
-		sent_on			Time.now
-		body				{:event_id => event_id, :url => 'http://usdos.us/users/sign_in'}	
-	end
+		begin
+			email = Volunteer.find(@shift.volunteer_id).email
+		rescue
+			email = ""
+		end
 
-	def update_alert
-		recipients	email 
-		from				'Village Organizer <#{organizer.email}>'
-		subject			'You have been signed up to volunteer'
-		sent_on			Time.now
-		body				{:event_id => event_id, :url => 'http://usdos.us/users/sign_in'}	
-	end
-=end
+		unless email.blank?
+			mail( :to => email,
+					  :from => "vsmmaster@usdos.us",
+          	:subject => @shift.slot.area.village.event.name + ': your shift is starting soon!') do |format|
+      	format.html
+			end
+		end
+	end	
+
+
 end

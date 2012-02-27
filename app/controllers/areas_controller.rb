@@ -17,17 +17,17 @@ class AreasController < ApplicationController
   # GET /areas/1.json
   def show
     @area = Area.find(params[:id])
-		@slots = Slot.find(:all, :conditions => {:area_id => @area.id})
+		redirect_to @area.village
+=begin
+		@slots = @area.slots
 
-		@village = Village.find(:first, :conditions => {:id => @area.village_id } )
-		@event = Event.find(:first, :conditions => {:id => @village.event_id } )
-		@num_days = (@event.end_date - @event.start_date).to_i
+		@num_days = (@area.village.event.end_date - @area.village.event.start_date).to_i
 	
 		@slots_array = Array.new
 
 		(0 .. @num_days).each do |i|
 			j = ActiveSupport::JSON
-			temp = Slot.find(:all, :conditions => {:area_id => @area.id, :start_date => @event.start_date + i})
+			temp = Slot.find(:all, :conditions => {:area_id => @area.id, :start_date => @area.village.event.start_date + i})
 
 			@slots_array << (j.encode(temp))
 		end		
@@ -36,6 +36,7 @@ class AreasController < ApplicationController
       format.html # show.html.erb
       format.json { render json: @area }
     end
+=end
   end
 
   # GET /areas/new

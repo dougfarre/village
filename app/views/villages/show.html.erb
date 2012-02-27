@@ -4,47 +4,23 @@
 
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Edit Village', edit_village_path(@village), :remote => true %> 
-<br/><br/>
-<div class="area"><div class="area_row">
-	<div class="area_cells">
-	<fieldset>
-    <legend><h3>Areas</h3></legend>
-		<br/>
-		<% if !@areas.blank? %>
-			<% i = 0 %>
-			<% @areas.each do |area| %>
-				<% i += 1 %>
-  				<b><%= "Area #{i}:" %></b>
-  				<%= link_to  "#{area.name}", area_path(area) %> | 
-					<%= link_to 'Edit', edit_area_path(area), :remote => true %> |
-    			<%= link_to 'Destroy', area, confirm: 'Are you sure?', method: :delete %>
-					<br/>
-		<% end %>
-		<% else %>
-			There are no Areas associated with this Village, please add one.
-			<br/>
-		<% end %>
+<%= link_to 'Edit Village', edit_village_path(@village), :remote => true %>  | 
+<%= link_to "New Area", new_area_path(:village_id => @village.id), :remote => true %>
 
-		<p>
-			<%= link_to "New Area", 
-					new_area_path(:village_id => @village.id),
-					:remote => true 
-					%>
-		</p>
-	</fieldset>
-	</div>
-	<div class="area_cells" style="width: 50px;"></div>
-	<div class="area_cells">
+<br/><br/>
+<% if !@areas.blank? %>
+	<%= render :partial => 'areas/show', :locals => {:areas => @areas} %>
+<% else %>
+	<div class="page">
 		<fieldset>
-			<legend><h3>Admin Functions</h3></legend>
-				<%= link_to 'Send Volunteer registration request by email', %> <br />
-				<%= link_to 'Update Volunteers by email', %> <br />
-				<%= link_to 'Export Volunteers list by csv', %> <br /> 
-				<%= link_to "Public link to this Village's master schedule",  %> <br /> 
+			<legend><h3>Areas</h3></legend>
+			There are no Areas associated with this Village, please add one.
+			<br/><br/>
+			<%= link_to "New Area", new_area_path(:village_id => @village.id), :remote => true %>
 		</fieldset>
 	</div>
-</div></div>
+<% end %>
+
 <br/>
 <%= link_to 'Back to Conference', event_path(@village.event_id) %>
 

@@ -1,103 +1,149 @@
 <h2><%= "#{@event.name} Conference" %></h2>
 
-<p id="notice"><%= notice %></p>
-
 <%= link_to 'Edit Conference', edit_event_path(@event), :remote => true %>
-<br/><br/>
+<br/>
 
 <div class="area">
 	<div class="area_row">
 		<div class="area_cells">	
-		<fieldset>
- 			<legend><h3>Conference Details</h3></legend>
-			<br/>	
- 			<b>Start date:</b>
- 			<%= @event.start_date %>
-			<br/><br/>
- 			<b>End date:</b>
- 			<%= @event.end_date %>
-			<br/><br/>
-		</fieldset>
+			<fieldset>
+				<legend><h3>Conference Details</h3></legend>
+				<b>Start date:</b>
+				<%= @event.start_date %>
+				<br/><br/>
+				<b>End date:</b>
+				<%= @event.end_date %><br/>
+			</fieldset>
 		</div>
 		<div class="area_cells" style="width: 50px;"></div>
 		<div class="area_cells">
-			<fieldset style="min-height: 150px;">
-    		<legend><h3>Villages</h3></legend>
+			<fieldset>
+				<legend><h3>Villages</h3></legend>
 				<% if !@villages.blank? %>
 					<% @villages.each do |village| %>
-  					<b>Name:</b>
-  					<%= link_to  "#{village.name}", village_path(village) %> | 
+						<b>Name:</b>
+						<%= link_to  "#{village.name}", village_path(village) %> | 
 						<%= link_to 'Edit', edit_village_path(village), :remote => true %> |
-    				<%= link_to 'Destroy', village, confirm: 'Are you sure?', method: :delete %>
-						<br/>
+						<%= link_to 'Destroy', village, confirm: 'Are you sure?', method: :delete %><br/>
 					<% end %>
 				<% else %>
 					There are no Villages associated with this Conference, please add one.
 					<br/><br/>
 				<% end %>
-				</br>
-				<%= link_to "New Village", new_village_path(:event_id => @event.id), :remote => true %>
+				</br><%= link_to "New Village", new_village_path(:event_id => @event.id), :remote => true %>
 			</fieldset>
 		</div>
 	</div> <!-- end of area_row -->
-</div> <!-- end of area -->
-<br/>
+</div><br/> <!-- end of area -->
 
-<div class="page">
-	<fieldset style="min-height: 150px;">
-    <legend><h3>Volunteers</h3></legend>
-		<% if !@volunteer_events.blank? %>
-			<div class="volunteer">
-				<div class="area_row">
-				<div class="area_cells" ><b>Email</b></div>
-				<div class="area_cells"><b>Registerd?</b></div>
-				<div class="area_cells"><b>Availability Entered?</b></div>
-				<div class="area_cells"><b>Name</b></div>
-				<div class="area_cells"><b>Phone</b></div>
-				<div class="area_cells"><b>Required Shifts</b></div>
-			</div>
-
-				<% @volunteer_events.each do |volunteer_e| %>
+<%= form_tag(maintain_path) do %>
+	<div class="page">
+		<fieldset style="min-height: 150px;">
+    	<legend><h3>Volunteers</h3></legend>
+			<% if !@volunteer_events.blank? %>
+				<div class="volunteer">
 					<div class="area_row">
-						<% volunteer = volunteer_e.volunteer %>
-						<% unless volunteer.blank? %>
-							<% display = "#{volunteer.first_name} #{volunteer.last_name} (#{volunteer.nick_name})" %>
-							<div class="area_cells">
-								<%= volunteer.email %>
-								<%= link_to 'Edit', edit_volunteer_path(volunteer) %> |
-    						<%= link_to 'Remove', unassociate_event_path(:event_id => @event.id, :volunteer_id => volunteer.id), confirm: 'Are you sure?' %>
-							</div>
-							<div class="area_cells">Yes</div>
-							<div class="area_cells">-</div>
-							<div class="area_cells"><%= display %></div>
-							<div class="area_cells"><%= volunteer.phone %></div>
-							<div class="area_cells"><%= volunteer_e.required_shifts %></div>
-						<% else %>
-							<div class="area_cells">
-								<%= volunteer_e.email %>
-    						<%= link_to 'Remove', unassociate_event_path(:event_id => @event.id, :volunteer_e => volunteer_e.id), confirm: 'Are you sure?' %>
-							</div>
-							<div class="area_cells">No</div>
-							<div class="area_cells">No</div>
-							<div class="area_cells">-</div>
-							<div class="area_cells">-</div>
-							<div class="area_cells">-</div>
+						<div class="generic_slots">
+							<%= link_to_function 'All', 'change_checkboxes(true)' %> | 
+							<%= link_to_function 'None', 'change_checkboxes(false)' %>
+						</div>
+						<div class="generic_slots"><b>Email</b></div>
+						<div class="generic_slots"><b>Availability?</b></div>
+						<div class="generic_slots"><b>Name</b></div>
+						<div class="generic_slots"><b>Phone</b></div>
+						<div class="generic_slots"><b># Shifts</b></div>
+						<% @event.villages.each do |village| %>
+							<div class="generic_slots"><b><%= village.name %></b></div>
 						<% end %>
-					</div> <!-- end row -->
-				<% end %>
-			</div> <!-- end volunteer -->
-				<% else %>
-					<span>There are no Volunteers associated with this Conference, please add one.</span>
-					<br/><br/>
-				<% end %>
-		<br/>
-			<!-- <%= link_to "New Volunteer", new_volunteer_path(:event_id => @event.id) %> | -->
-			<!-- <%= link_to "Import Volunteers", new_data_file_path(:event_id => @event.id), :remote => true %> | -->
-			<%= link_to "Add Existing", volunteer_mixer_path(:event_id => @event.id) %> | 
-			<%= link_to "Send Email Invites", volunteer_invite_path(:event_id => @event.id), :remote => true %> | 
-			<%= link_to "Send Email Updates", volunteer_mixer_path(:event_id => @event.id) %>
-</fieldset>
-</div>
+					</div>
+
+					<% @volunteer_events.each do |volunteer_e| %>
+						<div class="area_row">
+							<% volunteer = volunteer_e.volunteer %>
+							<% is_blank = volunteer.blank? %>
+
+							<div class="generic_slots"> <!-- checkbox -->
+								<%= check_box_tag 'selected_volunteers[]', volunteer_e.id %>
+							</div>
+
+							<div class="generic_slots"> <!-- email -->
+								<% unless is_blank %>
+									<%= link_to volunteer.email, edit_volunteer_path(volunteer) %>
+								<% else %>
+									<%= volunteer_e.email %>
+								<% end %>
+							</div>
+
+							<div class="generic_slots"> <!-- availability -->
+								<% unless is_blank %>
+									<% unless Avail.find(:all, :conditions => {:volunteer_event_id => volunteer_e.id}).blank? %>
+										Yes 
+									<% else %> 
+										No 
+									<% end %> 
+								<% else %> 
+									No
+								<% end %>
+							</div>
+
+							<div class="generic_slots">	<!-- name -->
+								<% unless is_blank %>
+									<% display = "#{volunteer.first_name} #{volunteer.last_name} (#{volunteer.nick_name})" %>
+									<%= display %>
+								<% else %>
+									-
+								<% end %>
+							</div> 							
+
+							<div class="generic_slots"> <!-- phone -->
+								<% unless is_blank %>
+									<%= volunteer.phone %>
+								<% else %>
+									-
+								<% end %>
+							</div>
+
+							<div class="generic_slots"> <!-- shifts -->
+								<% unless is_blank %>
+									<%= number_field_tag 'shift_' + volunteer_e.id , volunteer_e.id.to_s + '_' + volunteer_e.required_shifts.to_s, :in => 1...10, :size => 2, :disabled => true %>
+								<% else %>
+									-
+								<% end %>
+							</div>
+
+							<% @event.villages.each do |village| %> <!-- villages -->
+								<div class="generic_slots">
+									<% village.areas.each do |area| %>
+										<% is_checked = volunteer_e.areas.include? area %>
+  									<% display = "#{area.name}" %>
+										<%= check_box_tag 'areas[]', volunteer_e.id.to_s + '_' + area.id.to_s, is_checked, :disabled => true %> <%= label_tag 'area', "#{display}" %>
+										<span> </span>
+									<% end %>
+								</div>
+							<% end %> <!-- end villages.each -->
+						</div> <!-- end row -->
+					<% end %>
+				</div> <!-- end volunteer -->
+			<% else %>
+				<span>There are no Volunteers associated with this Conference, please add one.</span>
+				<br/><br/>
+			<% end %>
+			<br/>
+
+			<div style="float: left;">
+				<%= hidden_field_tag :event_id, @event.id %>
+				<%= submit_tag "Save" %>  
+				<%= submit_tag "Remove", :confirm => "Are you sure you want to remove these user(s)?" %> 
+			</div>
+			<div style="float: right;">
+				<%= link_to "Add Existing", volunteer_mixer_path(:event_id => @event.id) %> | 
+				<%= link_to "Send Email Invites", volunteer_invite_path(:event_id => @event.id), :remote => true %> | 
+				<%= link_to "Send Email Updates", volunteer_mixer_path(:event_id => @event.id) %>
+			</div>
+			<div style="clear: both;"></div>
+		</fieldset>
+	</div>
+<% end %>
 <div style="clear: both;"></div>
 <br/><br/>
 <%= link_to 'Back to Conferences', events_path %>
@@ -107,5 +153,56 @@
 <script type="text/javascript">
 	$(document).ready( function () {
 		activate_ajax('Add/Update');
+
+		$(':checkbox').bind('change', function (e) {
+			if (($(e.target).is(':checked') == true) &&
+					($(this).attr("id") == "selected_volunteers_")) {
+				change_checkbox(true, this);
+			} 
+			else if ($(this).attr("id") == "selected_volunteers_"){
+				change_checkbox(false, this);
+			}
+		});
+
+		$(':checkbox').each(function () {
+			if (($(this).is(':checked') == true) &&	
+					($(this).attr("id") == "selected_volunteers_")) {
+				change_checkbox(true, this);
+			}
+			else if ($(this).attr("id") == "selected_volunteers_"){
+				change_checkbox(false, this);
+			}
+		});
 	});
+
+	function change_checkbox(checked, caller) {
+		var $boxes = $('input[name^="selected_volunteers"]');
+		var $input1 = $(caller).closest('.area_row').find('input');
+
+		if (checked) {
+			$input1.removeAttr('disabled');
+		}
+		else {
+			$input1.attr("disabled", "disabled");
+			$(caller).removeAttr('disabled');
+		}
+	}
+
+	function change_checkboxes(checked) {
+		var $boxes = $('input[name^="selected_volunteers"]');
+
+		$boxes.each(function() {
+			if (checked) {
+				$(this).prop("checked", true);
+				change_checkbox(true, this);
+			}
+			else
+			{
+				$(this).prop("checked", false);
+				change_checkbox(false, this);
+			}
+		});
+	}
+
 </script>
+
