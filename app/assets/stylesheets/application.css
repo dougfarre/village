@@ -40,8 +40,8 @@ body {
 }
 
 #yeild {
-	background: url(" http://static3.grsites.com/archive/textures/ss/ss143.gif") repeat scroll 50% 0 #39414A;
-	/*background: url("http://static.jquery.com/files/rocker/images/bg_home_content.gif") repeat-x scroll 50% 0 #39414A;*/
+	/*background: url(" http://static3.grsites.com/archive/textures/ss/ss143.gif") repeat scroll 50% 0 #39414A;*/
+	background: url("http://static.jquery.com/files/rocker/images/bg_home_content.gif") repeat-x scroll 50% 0 #39414A;
 	background-size: 100% 100%;
 	padding: 1px 5px 4em 15px;
 	color: white;
