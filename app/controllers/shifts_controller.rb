@@ -14,7 +14,8 @@ class ShiftsController < ApplicationController
   # GET /shifts/1.json
   def show
     @shift = Shift.find(params[:id])
-		@volunteers = @shift.slot.area.village.event.volunteers
+		@volunteers = Volunteer.valid_volunteers_for_area(@slot)
+		#@volunteers = @shift.slot.area.village.event.volunteers
 		# @slots = Slot.find(:all, :conditions => {:area_id => @area.id})
 
     respond_to do |format|
@@ -28,8 +29,9 @@ class ShiftsController < ApplicationController
   def new
     @shift = Shift.new
 		@slot = Slot.find(params[:slot_id])
-		@volunteers = @slot.area.village.event.volunteers
-		@shift.update_attributes(:slot_id => @slot.id)
+		session[:slot_id] = @slot.id
+
+		@volunteers = Volunteer.valid_volunteers_for_area(@slot)
 
     respond_to do |format|
       format.html { render :layout => false } # new.html.erb
@@ -46,13 +48,14 @@ class ShiftsController < ApplicationController
   # POST /shifts.json
   def create
     @shift = Shift.new(params[:shift])
+		@shift.slot_id = session[:slot_id]
 
     respond_to do |format|
       if @shift.save
-        format.html { redirect_to @shift, notice: 'Shift was successfully created.' }
+        format.html { redirect_to edit_slot_path(session[:slot_id]), notice: 'Shift was successfully created.' }
         format.json { render json: @shift, status: :created, location: @shift }
       else
-        format.html { render action: "new" }
+        format.html { redirect_to edit_slot_path(session[:slot_id]), notice: 'Cannot save, the Volunteer is already registered for this slot.' }
         format.json { render json: @shift.errors, status: :unprocessable_entity }
       end
     end
@@ -68,7 +71,7 @@ class ShiftsController < ApplicationController
         format.html { redirect_to edit_slot_path(@shift.slot_id), notice: 'Shift was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html { redirect_to edit_slot_path(session[:slot_id]), notice: "Cannot save, the Volunteer is already registered for this slot" }
         format.json { render json: @shift.errors, status: :unprocessable_entity }
       end
     end

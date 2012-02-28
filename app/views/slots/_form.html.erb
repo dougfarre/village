@@ -21,13 +21,13 @@
 	<div class="field">
 		<%= f.label :start_time %>
 		<br/>
-  	<%= f.time_select :start_time  %> 
+  	<%= f.time_select :start_time, {:minute_step => 5, :ampm => true} %> 
 	</div>
 	<br/>
 	<div class="field">
 		<%= f.label :end_time %>
 		<br/>
-		<%= f.time_select :end_time %>
+		<%= f.time_select :end_time, {:minute_step => 5, :ampm => true} %>
 	</div>
 	<br/>
 

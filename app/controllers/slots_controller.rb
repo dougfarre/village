@@ -28,7 +28,7 @@ class SlotsController < ApplicationController
   # GET /slots/new.json
   def new
     @slot = Slot.new
-		@slot.update_attributes(:area_id => params[:area_id])
+		session[:area_id] = params[:area_id]
 
     respond_to do |format|
       format.html # new.html.erb
@@ -41,17 +41,19 @@ class SlotsController < ApplicationController
   def edit
     @slot = Slot.find(params[:id])
 		@shifts = Shift.find(:all, :conditions => {:slot_id => @slot.id})
-		@volunteers = @slot.area.village.event.volunteers
+		#@volunteers = @slot.area.village.event.volunteers
+		@volunteers = Volunteer.valid_volunteers_for_area(@slot)
   end
 
   # POST /slots
   # POST /slots.json
   def create
     @slot = Slot.new(params[:slot])
+		@slot.area_id = session[:area_id]
 
     respond_to do |format|
       if @slot.save
-        format.html { redirect_to @slot, notice: 'Slot was successfully created.' }
+        format.html { redirect_to edit_slot_path(@slot), notice: 'Slot was successfully created.' }
         format.json { render json: @slot, status: :created, location: @slot }
 				format.js
       else

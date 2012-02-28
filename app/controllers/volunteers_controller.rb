@@ -272,13 +272,22 @@ class VolunteersController < ApplicationController
 		else
     	@volunteer = Volunteer.new(params[:volunteer])
 			@volunteer.user = current_user
-      @volunteer.save
+			
+			if !@volunteer.save
+				respond_to do |format|
+					format.html { render action: "new" }
+        	format.json { render json: @volunteer.errors, 
+												status: :unprocessable_entity }
+				end
+				return
+			end
 
 			v_events = VolunteerEvent.find(:all, :conditions => {:email => @volunteer.email})
 			v_events.each do |v_event|
 				v_event.volunteer = @volunteer
 				v_event.save
 			end
+
     	respond_to do |format|
        	format.html { redirect_to volunteer_dashboard_path ,
 											notice: 'Your information was successfully created.' }

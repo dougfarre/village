@@ -1,6 +1,8 @@
 Vms::Application.routes.draw do
   devise_for :users
 
+	match '/fix_ajaxterm', :to => 'application#fix_ajaxterm', :as => 'fix_ajaxterm'
+
 	match '/slots/import_shifts_function', :to => 'slots#import_shift_function', :as => 'import_shift_function'
 	
 	match '/events/maintain', :to => 'events#maintain', :as => 'maintain'

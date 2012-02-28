@@ -18,7 +18,7 @@
 		
   <div class="field">
     <%= label_tag "Volunteer Nick Name" %><br />
-		<%= f.collection_select(:volunteer_id, @volunteers, :id, :nick_name) %> 
+		<%= f.collection_select(:volunteer_id, @volunteers, :id, :nick_name, {:include_blank => true}) %> 
 	</div>
 	<br />
   <div class="actions">

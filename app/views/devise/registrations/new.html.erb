@@ -12,9 +12,9 @@
   <%= f.password_field :password_confirmation %></div>
 	<br/>
 	<div>
-		<%= f.radio_button :user_type, 'organizer', :checked => true %>
+		<%= f.radio_button :user_type, 'organizer'	%>
 		<%= label :user_type_organizer, 'Village Organizer' %>
-		<%= f.radio_button :user_type, 'volunteer' %>
+		<%= f.radio_button :user_type, 'volunteer', :checked => true %>
 		<%= label :user_type_volunteer, 'Volunteer' %>
 	</div>
 

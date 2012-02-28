@@ -1,11 +1,25 @@
+class ShiftValidator < ActiveModel::Validator
+	def validate(record)
+		other_shifts = Shift.where(:slot_id => record.slot_id)
+
+		unless other_shifts.blank?
+			record.errors[:base] << "This volunteer is already registered for this slot."
+		end
+	end
+end
+
+
 class Shift < ActiveRecord::Base
-belongs_to :slot
-has_one :volunteer
+	belongs_to :slot
+	has_one :volunteer
+	validates_uniqueness_of :slot_id, :scope => :volunteer_id,
+													:unless => Proc.new {|shift| shift.volunteer_id.blank?}
 
-include ApplicationHelper
+	#validates_with ShiftValidator
+	include ApplicationHelper
 
-require 'rubygems'
-require 'twilio-ruby'
+	require 'rubygems'
+	require 'twilio-ruby'
 
 	def send_sms_message
 		begin

@@ -4,27 +4,33 @@
 	<%= render 'form' %>
 </div>
 
+<% if @slot.errors.blank? %> 
 <div style="float: left; width: 400px; margin-left: 50px;">
 	<fieldset>
     <legend><h3>Shifts</h3></legend>
 		<br/>
-		<% if !@shifts.blank? %>
+		<% unless @shifts.blank? %>
 			<% i = 0 %>
 			<% @shifts.each do |shift| %>
 				<% i += 1 %>
-  				<b><%= "Shift #{i}:" %></b>
-					<%= form_for(shift) do |s| %>
-  					<%= s.text_field  :title %> | 
-						<%= s.collection_select(:volunteer_id, @volunteers, :id, :nick_name) %> | 
-						<%= s.submit 'Update' %> 
-						<br/>
-    				<%= link_to 'Destroy', shift, confirm: 'Are you sure?', method: :delete %>
+  			<b><%= "Shift #{i}:" %></b>
+				<%= form_for(shift) do |s| %>
+					<% unless shift.errors.blank? %>	
+					<% shift.errors.full_messages.each do |msg| %>
+        		<li><%= msg %></li>
+      		<% end %>
 					<% end %>
+  				<%= s.text_field  :title %> | 
+					<%= s.collection_select(:volunteer_id, @volunteers, :id, :nick_name, {:include_blank => true}) %> | 
+					<%= s.submit 'Update' %> 
 					<br/>
-		<% end %>
+    			<%= link_to 'Destroy', shift, confirm: 'Are you sure?', method: :delete %>
+				<% end %>
+				<br/>
+			<% end %>
 		<% end %>
 		<% if @slot.required_shifts > @shifts.length %>
-			<span><b>! You still need to add <u><%= @slot.required_shifts - @shifts.length %></u> slot(s) to meet the slot's requirement!</b>
+			<span><b>! You still need to add <u><%= @slot.required_shifts - @shifts.length %></u> shift(s) to meet the slot's requirement!</b>
 		<%end %>
 		<p>
 			<%= link_to "New Shift", new_shift_path(:slot_id => @slot.id), :remote => true %> | 
@@ -32,6 +38,7 @@
 		</p>
 	</fieldset>
 </div> 
+<% end %>
 <br/>
 <div style="clear: both;"></div>
 <%= link_to 'Back to Areas', village_path(@slot.area.village.id) %>

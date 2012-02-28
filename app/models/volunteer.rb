@@ -8,6 +8,24 @@ class Volunteer < ActiveRecord::Base
 	require 'rubygems'
 	require 'twilio-ruby'
 
+	def self.valid_volunteers_for_area(slot)
+		volunteers = Array.new
+		area = slot.area
+		event = area.village.event
+		all_volunteers = event.volunteers
+		
+		all_volunteers.each do |volunteer|
+			volunteer_event = VolunteerEvent.find(:first, 
+											  	:conditions => {:volunteer_id => volunteer.id, 
+																				  :event_id => event.id})
+			if volunteer_event.areas.include?(area)
+				volunteers.push(volunteer)
+			end
+		end		
+
+		return volunteers
+	end
+
 	def send_sms_message(message)
 		begin
 			number_to_send_to = phone
