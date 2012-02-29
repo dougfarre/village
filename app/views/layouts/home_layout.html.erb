@@ -1,33 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Vms</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= javascript_include_tag "jquery.easytabs.min.js" %>
-	<%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" %>
-  <%= stylesheet_link_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/cupertino/jquery-ui.css" %>	
-  <%= csrf_meta_tags %>
-	<%= stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Magra' %> 
-</head>
-<body>
-	<div id="container">
-		<div style="float: left; padding-left: 5px; position: realtive;">
-			<br/>
-			<br/>
-			<% if user_signed_in? %>
-				<span class="white"> Signed in as <%= current_user.email %></span>
-				<span class="white"> Not you? <%= link_to "Sign out", destroy_user_session_path, :method => :delete %></span>
-			<% else %>
-				<span class="white"> 
-					<%= link_to "Sign up", new_user_registration_path %> or 
-					<%= link_to "Sign in", new_user_session_path %></span>
-			<% end %>
-		</div>
-		<div style="float: right; padding-right: 5px;">
-			<%= image_tag "CougarWare_Logo_red.png", :size => "300x100" %>
-		</div>
-		<div style="clear: both;"></div>
+		<%= render 'layouts/above' %>
 		<div id="tab-container" class="tab-container">
 			<ul class='etabs'>
 				<li class='tab' id='tab1'><a href="/home/ajax_index" data-target="#tabs1-home">Home</a></li>
