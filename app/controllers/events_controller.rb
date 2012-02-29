@@ -17,14 +17,16 @@ class EventsController < ApplicationController
 				shifts = params['shift_' + volunteer_event.id.to_s] 	
 				new_areas = Array.new()
 
-				area_ids.each do |area_id|
-					unless area_id.scan(volunteer_event_id.to_s + '_').blank?	
-						new_areas.push(area_id.split('_')[1])		
+				unless area_ids.blank?
+					area_ids.each do |area_id|
+						unless area_id.scan(volunteer_event_id.to_s + '_').blank?	
+							new_areas.push(area_id.split('_')[1])		
+						end
 					end
+				volunteer_event.area_ids = new_areas 
 				end
 
 				volunteer_event.required_shifts = shifts	
-				volunteer_event.area_ids = new_areas 
 				volunteer_event.save!
 			end
 		elsif params[:commit] == "Send Email Alerts"
@@ -40,7 +42,7 @@ class EventsController < ApplicationController
 		end
 
 		respond_to do |format|
-      format.html { redirect_to :back }
+      format.html { redirect_to :back, notice: "Area and shift information for selected volunteers saved!" }
       format.json { head :no_content }
     end
 	end
@@ -51,7 +53,7 @@ class EventsController < ApplicationController
     @events = Event.find(:all, :conditions => {:user_id => current_user.id})
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html {render :layout => false}# index.html.erb
       format.json { render json: @events }
     end
   end

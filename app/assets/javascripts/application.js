@@ -17,6 +17,7 @@
 //= require_tree .
 
 $(document).ready( function () {
+	//$('#tab-container').easytabs({defaultTab: 'li#tab2'});
 });
 
 function activate_ajax(title) {
