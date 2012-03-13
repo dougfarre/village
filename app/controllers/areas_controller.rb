@@ -18,32 +18,14 @@ class AreasController < ApplicationController
   def show
     @area = Area.find(params[:id])
 		redirect_to @area.village
-=begin
-		@slots = @area.slots
-
-		@num_days = (@area.village.event.end_date - @area.village.event.start_date).to_i
-	
-		@slots_array = Array.new
-
-		(0 .. @num_days).each do |i|
-			j = ActiveSupport::JSON
-			temp = Slot.find(:all, :conditions => {:area_id => @area.id, :start_date => @area.village.event.start_date + i})
-
-			@slots_array << (j.encode(temp))
-		end		
-
-		respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @area }
-    end
-=end
   end
 
   # GET /areas/new
   # GET /areas/new.json
   def new
     @area = Area.new
-		@area.update_attributes(:village_id => params[:village_id])
+		#@area.update_attributes(:village_id => params[:village_id])
+		session[:village_id] = params[:village_id]
 
     respond_to do |format|
       format.html {render :layout => false}# new.html.erb
@@ -61,6 +43,7 @@ class AreasController < ApplicationController
   # POST /areas.json
   def create
     @area = Area.new(params[:area])
+		@area.village_id = session[:village_id] 
 
     respond_to do |format|
       if @area.save

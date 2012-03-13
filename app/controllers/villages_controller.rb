@@ -26,7 +26,8 @@ class VillagesController < ApplicationController
   # GET /villages/new.json
   def new
     @village = Village.new
-		@village.update_attributes(:event_id => params[:event_id])
+		#@village.update_attributes(:event_id => params[:event_id])
+		session[:event_id] = params[:event_id]
 
     respond_to do |format|
       format.html {render :layout => false}# new.html.erb
@@ -44,10 +45,11 @@ class VillagesController < ApplicationController
   # POST /villages.json
   def create
     @village = Village.new(params[:village])
-
+		@village.event_id = session[:event_id]
+			
     respond_to do |format|
       if @village.save
-        format.html { redirect_to @vilalge, notice: 'Village was successfully created.' }
+        format.html { redirect_to @village, notice: 'Village was successfully created.' }
         format.json { render json: @village, status: :created, location: @village }
       else
         format.html { render action: "new" }

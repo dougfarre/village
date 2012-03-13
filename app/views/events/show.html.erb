@@ -104,11 +104,15 @@
 							</div>
 
 							<div class="generic_slots"> <!-- shifts -->
-								<% unless is_blank %>
-									<%= number_field_tag 'shift_' + volunteer_e.id.to_s , volunteer_e.required_shifts, :in => 1...10, :size => 2, :disabled => true %>
-								<% else %>
-									-
-								<% end %>
+								<div style="text-align: center;" >
+									<div style="display: inline-block;">
+										<% unless is_blank %>
+											<%= number_field_tag 'shift_' + volunteer_e.id.to_s , volunteer_e.required_shifts, :in => 1...10, :size => 2, :disabled => true %>
+										<% else %>
+											<div style="height: 20px; margin-top: 5px;">-</div>
+										<% end %>
+									</div>
+								</div>
 							</div>
 
 							<% @event.villages.each do |village| %> <!-- villages -->

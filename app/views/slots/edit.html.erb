@@ -20,7 +20,7 @@
         		<li><%= msg %></li>
       		<% end %>
 					<% end %>
-  				<%= s.text_field  :title %> | 
+  				<%= s.text_field  :title, :size => 20 %> | 
 					<%= s.collection_select(:volunteer_id, @volunteers, :id, :nick_name, {:include_blank => true}) %> | 
 					<%= s.submit 'Update' %> 
 					<br/>

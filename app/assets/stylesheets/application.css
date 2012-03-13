@@ -20,6 +20,9 @@
 html {
 	height: 100%;
 	font-family: 'Magra', sans-serif;
+	/*font-family: Impact, Charcoal, sans-serif;*/
+	/*font-family: Arial, helvetica;*/
+	/*font-weight: lighter;*/
 }
 
 body {
@@ -139,3 +142,99 @@ a:hover {color: #ff0000; text-decoration: none; }
 	height: 150px;
 }
 
+.title_wrapper {
+	text-align: center;
+	margin: 20px auto 20px auto;
+}
+
+.title {
+	font-size: 58px;
+	font-weight: bold;
+	color: white;
+	display: inline-block;
+	margin: 0px auto 0px auto;
+}
+
+div.center {
+	display: inline-block;
+	margin: 0px 20px;
+	color: white;
+	font-size: 24px;
+}
+
+.sign_in_home {
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	-khtml-border-radius: 10px;
+	width: 50%;
+	height: 75px;
+	display: inline-block;
+	/*background-color: #0f67a1;*/
+	background-image: url('http://static.jquery.com/files/rocker/images/bg_subtleGrayGrad.gif');
+	background-repeat: repeat-x;
+	background-size: 100% 100%;
+	text-align: center;
+}
+
+#home_email {
+	width: 250px;
+	font-size: 70%;
+}
+
+button {
+ font-size: .8em !important;
+}
+
+.input_field {
+	font: inherit;
+	font-size: .7em !important;
+	color: inherit;
+	text-align: inherit;
+	outline: none;
+	cursor: text;
+	width: inherit !important;
+}
+
+input[type=text], input[type=email], input[type=number], input[type=tel], input[type=password], select {
+	border: 1px solid #ccc;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	-khtml-border-radius: 10px;
+	box-shadow: 2px 2px 3px #666;
+	/*font-size: inherit !important;*/
+	font-size: inherit;
+	padding: 4px 7px;
+	outline: 0;
+	-webkit-appearance: none;
+}
+
+input[type=text]:focus, select:focus, input[type=email]:focus, input[type=number]:focus, input[type=tel]:focus, input[type=checkbox]:focus, input[type=password]:focus {
+	border-color: #000;
+}
+
+input[type=number] {
+	width: 15px !important;
+	margin-top: 3px !important;
+	box-shadow: none !important;
+	margin: 3px 0px 0px 0px !important;
+	text-align: center;
+}
+
+.start_style {
+	font-style: italic;
+	color: grey; 
+}
+
+.end_style {
+	font-style: normal;
+	color: black;
+}
+
+/*input[type=checkbox] {
+	width: 10px !important;
+	margin-top: 3px !important;
+	box-shadow: none !important;
+	margin: 3px 0px 0px 0px !important;
+}*/

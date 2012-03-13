@@ -1,11 +1,38 @@
-<p class="title">
-	Conference Manager
-</p>	
-
-<span>
-	Organize, manage, and schedule volunteers easier than ever!
-</span>
-
-<div id="announce">
-	test
+<div class="title_wrapper">
+	<div class="title">
+		Conference Manager
+	</div>	
 </div>
+
+<div class="title_wrapper">
+	<div style="inline">
+		<div class="center">
+			Email and text alerts.
+		</div>
+		<div class="center">
+			Automatic scheduling.
+		</div>
+		<div class="center">
+			Happy volunteers.
+		</div>
+	</div>
+</div>
+
+<div class="title_wrapper">
+	<div class="sign_in_home">
+		<div class="center" style="margin-top: 20px;">
+			<%= form_tag(email_send_path) do %>
+				<%= button_tag "Go!" %>	
+				<div style="display: inline-block; width: 5px;"></div>
+				<%= email_field_tag "home_email", 'yourname@email.com', {:class => 'start_style'} %>
+			<% end %>
+		</div>
+	</div>
+</div>
+
+<div class="title_wrapper">
+	<div class="center">
+		Organize, manage, and schedule volunteers easier than ever!
+	</div>
+</div>
+

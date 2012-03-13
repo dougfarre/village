@@ -107,8 +107,14 @@ class VolunteersController < ApplicationController
 	end
 
 	def associate_event
-		event = Event.find(params[:event_id].to_i)
-
+		begin
+			event = Event.find(params[:event_id].to_i)
+		rescue
+			flash[:message] = 'Event does not exist.'
+			redirect_to volunteer_dashboard_path 
+			return
+		end
+		
 		unless event.volunteers.include?(current_user.volunteer)
 			event.volunteers << current_user.volunteer
 		end
@@ -196,23 +202,6 @@ class VolunteersController < ApplicationController
     	end
 		end
 	end
-
-
-  # GET /volunteers
-
-
-
-  # GET /volunteers.json
-=begin
-  def index
-    @volunteers = Volunteer.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @volunteers }
-    end
-  end
-=end
 
   # GET /volunteers/1
   # GET /volunteers/1.json

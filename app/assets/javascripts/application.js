@@ -15,12 +15,33 @@
 //= require jquery_ujs
 //= require jquery.remotipart
 //= require_tree .
+function getURLParameter(name) { 
+return decodeURI((RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]);
+}
 
 $(document).ready( function () {
 	//$('#tab-container').easytabs({defaultTab: 'li#tab2'});
+	/*$('input:submit').each(function () {
+		$(this).replaceWith('<button type="submit">' + $(this).val() +	'</button>');
+	});
+	$('button').button();
+	*/
+	/*var $input_selector = $('input:text, input[type=number]');
+	//$('input[type=text], input[type=email]').button().addClass('input_field');
+	$input_selector..addClass('input_field');*/
+
+	$('#home_email').live('click', function () {
+		$(this).val('');
+		$(this).removeClass('start_style');
+		$(this).addClass('end_style');
+	});
+
+	if (getURLParameter('email') != 'null') {
+		$('#user_email').val(getURLParameter('email'));
+	}
 });
 
-function activate_ajax(title) {
+	function activate_ajax(title) {
 	$(document).bind('ajax:success', function(e, data){ 
 		var $tag = $('#temp_area');
 		$tag.html(data);

@@ -13,4 +13,8 @@ class HomeController < ApplicationController
 		end
   end
 
+	def email_send
+		redirect_to '/users/sign_up?email=' + params[:home_email]
+	end
+
 end

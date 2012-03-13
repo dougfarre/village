@@ -3,12 +3,15 @@ class EventsController < ApplicationController
 	def maintain
 		event = Event.find(params[:event_id])
 		volunteer_event_ids = params[:selected_volunteers]
+		notice = 'test'
 
-		if params[:commit] == "Remove" 
+		if params[:commit].to_s == "Remove" 
 			volunteer_event_ids.each do |volunteer_event_id|
 				volunteer_event = VolunteerEvent.find(volunteer_event_id)
 				volunteer_event.destroy
 			end
+			notice = "Volunteers removed."
+
 		elsif params[:commit] == "Save" 
 			area_ids = params[:areas]		
 			volunteer_event_ids.each do |volunteer_event_id|
@@ -29,6 +32,8 @@ class EventsController < ApplicationController
 				volunteer_event.required_shifts = shifts	
 				volunteer_event.save!
 			end
+			notice = "Volunteers removed."
+
 		elsif params[:commit] == "Send Email Alerts"
 			session[:volunteer_event_ids] = volunteer_event_ids 
 			session[:medium] = 'email'
@@ -42,7 +47,7 @@ class EventsController < ApplicationController
 		end
 
 		respond_to do |format|
-      format.html { redirect_to :back, notice: "Area and shift information for selected volunteers saved!" }
+      format.html { redirect_to :back, notice: notice.to_s }
       format.json { head :no_content }
     end
 	end
@@ -53,7 +58,7 @@ class EventsController < ApplicationController
     @events = Event.find(:all, :conditions => {:user_id => current_user.id})
 
     respond_to do |format|
-      format.html {render :layout => false}# index.html.erb
+      format.html {render :layout => true}# index.html.erb
       format.json { render json: @events }
     end
   end

@@ -1,5 +1,11 @@
 <h2>Volunteer Dashboard</h3>
 
+<% if flash[:message] %>
+	<span> <%= flash[:message] %> </span>
+	<br/>
+	<br/>
+<% end %>
+
 <div class="area">
 	<div class="area_row">
 		<div class="area_cells">
