@@ -10,9 +10,11 @@
 				<legend><h3>Conference Details</h3></legend>
 				<b>Start date:</b>
 				<%= @event.start_date %>
-				<br/><br/>
+				<br/>
 				<b>End date:</b>
-				<%= @event.end_date %><br/>
+				<%= @event.end_date %>
+				<br/><br/>	
+				<%= link_to 'Master Schedule', master_schedule_path(:id => @event.id) %>
 			</fieldset>
 		</div>
 		<div class="area_cells" style="width: 50px;"></div>
@@ -24,7 +26,8 @@
 						<b>Name:</b>
 						<%= link_to  "#{village.name}", village_path(village) %> | 
 						<%= link_to 'Edit', edit_village_path(village), :remote => true %> |
-						<%= link_to 'Destroy', village, confirm: 'Are you sure?', method: :delete %><br/>
+						<%= link_to 'Destroy', village, confirm: 'Are you sure?', method: :delete %>
+						<br/>
 					<% end %>
 				<% else %>
 					There are no Villages associated with this Conference, please add one.

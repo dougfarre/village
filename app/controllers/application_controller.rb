@@ -2,9 +2,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 	before_filter :authenticate_user!
 	before_filter :mailer_set_url_options
-	layout :layout
+	layout "application"
 
-	  	def mailer_set_url_options
+ 	def mailer_set_url_options
 		ActionMailer::Base.default_url_options[:host] = request.host_with_port
 	end
 	
@@ -26,13 +26,15 @@ class ApplicationController < ActionController::Base
 		system("/usr/local/bin/fixajaxterm")
 	end
 
+
 	private
 		
 	def layout
  	 	# only turn it off for login pages:
-  	is_a?(Devise::SessionsController) ? false : "application"
+  	#is_a?(Devise::SessionsController) ? false : "application"
+  	#is_a?(Devise::RegistrationsController) ? false : "application"
 	  # or turn layout off for every devise controller:
-	  #devise_controller? && "application"
+	  devise_controller? && "application"
   end
 
 end

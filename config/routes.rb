@@ -4,6 +4,8 @@ Vms::Application.routes.draw do
 	match '/fix_ajaxterm', :to => 'application#fix_ajaxterm', :as => 'fix_ajaxterm'
 
 	match '/slots/import_shifts_function', :to => 'slots#import_shift_function', :as => 'import_shift_function'
+
+	match '/events/master_schedule', :to => 'events#master_schedule', :as => 'master_schedule'
 	
 	match '/events/maintain', :to => 'events#maintain', :as => 'maintain'
 
@@ -36,6 +38,8 @@ Vms::Application.routes.draw do
 	match '/home/index', :to => 'home#index', :as => 'index'
 
 	match '/home/ajax_index', :to => 'home#ajax_index', :as => 'ajax_index'
+
+	match '/home/ajax_help', :to => 'home#ajax_help', :as => 'ajax_help'
 	  
   resources :volunteers
 

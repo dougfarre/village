@@ -1,0 +1,60 @@
+<h2> Master Schedule for <%= @event.name %> </h3>
+
+<% unless @event.villages.blank?	%>	
+	<% @event.villages.each do |village| %>
+		<% unless village.areas.blank? %>
+			<% i = 0 %>
+			<% village.areas.each do |area| %>
+				<% i += 1 %>
+				<div class="page">
+					<fieldset>
+						<legend><h3>
+							<%= "#{area.name} Area in the #{area.village.name} Village" %>
+						</h3></legend>
+						<div class="area">
+							<% slots_array = area.slots_array %>
+							<% num_days = area.num_days %>
+							<% t_width = (730/(num_days + 1)).to_i %>
+							<div class="area_row">
+								<% (0 .. num_days).each do |i| %> 
+									<% current_date = area.village.event.start_date + i %>
+									<% current_date_s = current_date.strftime("%A, %b %d %Y") %>
+									<% current_slot = ActiveSupport::JSON.decode(slots_array[i])%>
+									<div class="area_slots" style="width: <%= t_width %>px;">
+										<%= "#{current_date_s}" %> 
+										<ol style="margin-left: -20px;">
+											<% current_slot.each do |slot| %>
+												<% start_t = Time.parse(slot['start_time']).strftime("%I:%M%p") %>
+												<% end_t = Time.parse(slot['end_time']).strftime("%I:%M%p") %>
+												<% s_id = slot['id'] %>
+												<li>
+													<%= "#{start_t} to #{end_t}" %>
+													<% shifts = Shift.where(:slot_id => slot['id']) %>
+													<% unless shifts.blank? %>
+														<ul style="margin-left: -20px;">
+															<% shifts.each do |shift| %>
+																<li style="font-size: 75%;">
+																	<% unless shift.title.blank? %>
+																		<%= "#{shift.title}: " %>	
+																	<% end %>
+																	<% unless shift.volunteer_id.blank? %>
+																		<% vol = Volunteer.find(shift.volunteer_id) %>
+																		<%= "#{vol.nick_name}" %>	
+																	<% end %>
+																</li>
+															<% end %> <!-- end of shifts.each -->
+														</ul>
+													<% end %> <!-- end of shifts.blank? -->
+												</li>
+											<% end %>
+										</ol>
+									</div>
+								<% end %>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+			<% end %> <!-- end of areas.each -->			
+		<% end %> <!-- end village.areas.blank? -->
+	<% end %> <!-- end of villlages.each -->
+<% end  %> <!-- end of event.village.blank? -->

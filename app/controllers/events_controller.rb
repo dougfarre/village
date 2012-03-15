@@ -1,4 +1,12 @@
 class EventsController < ApplicationController
+	layout "application"
+
+
+	def master_schedule
+		@event = Event.find(params[:id])
+		render #:layout => false
+
+	end
 
 	def maintain
 		event = Event.find(params[:event_id])
@@ -58,7 +66,7 @@ class EventsController < ApplicationController
     @events = Event.find(:all, :conditions => {:user_id => current_user.id})
 
     respond_to do |format|
-      format.html {render :layout => true}# index.html.erb
+      format.html { render :layout => true}# index.html.erb
       format.json { render json: @events }
     end
   end

@@ -13,6 +13,12 @@ class HomeController < ApplicationController
 		end
   end
 
+	def ajax_help
+		respond_to do |format|
+			format.html {render :layout => false }
+		end
+  end
+
 	def email_send
 		redirect_to '/users/sign_up?email=' + params[:home_email]
 	end
