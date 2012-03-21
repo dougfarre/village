@@ -52,10 +52,10 @@ class ShiftsController < ApplicationController
 
     respond_to do |format|
       if @shift.save
-        format.html { redirect_to edit_slot_path(session[:slot_id]), notice: 'Shift was successfully created.' }
+        format.html { redirect_to edit_slot_path(@shift.slot_id), notice: 'Shift was successfully created.' }
         format.json { render json: @shift, status: :created, location: @shift }
       else
-        format.html { redirect_to edit_slot_path(session[:slot_id]), notice: 'Cannot save, the Volunteer is already registered for this slot.' }
+        format.html { redirect_to edit_slot_path(@shift.slot_id), notice: 'Cannot save, the Volunteer is already registered for this slot.' }
         format.json { render json: @shift.errors, status: :unprocessable_entity }
       end
     end
@@ -71,7 +71,7 @@ class ShiftsController < ApplicationController
         format.html { redirect_to edit_slot_path(@shift.slot_id), notice: 'Shift was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { redirect_to edit_slot_path(session[:slot_id]), notice: "Cannot save, the Volunteer is already registered for this slot" }
+        format.html { redirect_to edit_slot_path(@shift.slot_id), notice: "Cannot save, the Volunteer is already registered for this slot" }
         format.json { render json: @shift.errors, status: :unprocessable_entity }
       end
     end

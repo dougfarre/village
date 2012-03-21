@@ -51,5 +51,6 @@
 </p>
 
 
-<%= link_to 'Edit', edit_volunteer_path(@volunteer) %> |
+<%= link_to 'Edit', edit_volunteer_path(@volunteer) %> | 
+<%= link_to 'Destroy', @volunteer, confirm: 'Are you sure? This will entirely remove this volunteer from the system.', method: :delete %> | 
 <%= link_to 'Back', :back %>

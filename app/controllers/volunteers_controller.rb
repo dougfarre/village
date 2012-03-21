@@ -314,6 +314,8 @@ class VolunteersController < ApplicationController
   # DELETE /volunteers/1.json
   def destroy
     @volunteer = Volunteer.find(params[:id])
+
+		@volunteer.user.destroy
     @volunteer.destroy
 
     respond_to do |format|
