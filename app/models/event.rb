@@ -13,8 +13,8 @@ end
 
 class Event < ActiveRecord::Base
 	has_many :villages, :dependent => :destroy
-	has_many :volunteer_events
-	has_many :volunteers, :through => :volunteer_events
+	has_many :volunteer_events, :dependent => :destroy ##
+	has_many :volunteers, :through => :volunteer_events, :dependent => :delete_all
 	has_many :data_files, :as => :attachable, :dependent => :destroy
 	validates_with EventValidator
 	belongs_to :user

@@ -14,13 +14,14 @@ class EventsController < ApplicationController
 		notice = 'test'
 
 		if params[:commit].to_s == "Remove" 
+			notice = "Volunteers removed."
 			volunteer_event_ids.each do |volunteer_event_id|
 				volunteer_event = VolunteerEvent.find(volunteer_event_id)
 				volunteer_event.destroy
 			end
-			notice = "Volunteers removed."
 
 		elsif params[:commit] == "Save" 
+			notice = "Volunteers saved."
 			area_ids = params[:areas]		
 			volunteer_event_ids.each do |volunteer_event_id|
 				volunteer_event = VolunteerEvent.find(volunteer_event_id)
@@ -40,7 +41,6 @@ class EventsController < ApplicationController
 				volunteer_event.required_shifts = shifts	
 				volunteer_event.save!
 			end
-			notice = "Volunteers removed."
 
 		elsif params[:commit] == "Send Email Alerts"
 			session[:volunteer_event_ids] = volunteer_event_ids 

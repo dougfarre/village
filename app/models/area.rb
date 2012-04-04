@@ -1,7 +1,7 @@
 class Area < ActiveRecord::Base
 belongs_to :village
-has_many :slots
-has_and_belongs_to_many :volunteer_events
+has_many :slots, :dependent => :destroy ##
+has_and_belongs_to_many :volunteer_events #, :dependent => :delete_all ##
 
 validates :name, :length => {:maximum => 15}, :presence => true
 

@@ -1,6 +1,6 @@
 class Volunteer < ActiveRecord::Base
-	has_many :volunteer_events
-	has_many :events, :through => :volunteer_events
+	has_many :volunteer_events, :dependent => :destroy
+	has_many :events, :through => :volunteer_events, :dependent => :delete_all
 	belongs_to :user
 	belongs_to :shift
 	validates_presence_of :first_name, :last_name, :nick_name, :phone, :email
