@@ -48,7 +48,7 @@ $(document).ready( function () {
 		$tag.dialog({
 			autoOpen: false, 
 			modal: true,
-			title: title,
+			title:  $tag.find('#title').text()/*title*/,
 			width: "500px"
 		}).dialog('open');
 	}); 

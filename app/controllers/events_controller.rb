@@ -11,7 +11,12 @@ class EventsController < ApplicationController
 	def maintain
 		event = Event.find(params[:event_id])
 		volunteer_event_ids = params[:selected_volunteers]
-		notice = 'test'
+		notice = ''
+
+		if volunteer_event_ids == nil
+      redirect_to :back, notice: 'No volunteer(s) selected' 
+			return
+		end
 
 		if params[:commit].to_s == "Remove" 
 			notice = "Volunteers removed."

@@ -42,12 +42,11 @@
   		<div class="area_slots">
     		<%= f.label :phone %><br />
     		<%= f.phone_field :phone %>
+		<div style="display: inline-block; width: 7px;"></div>
+		<%= f.check_box :receive_sms %>
+		<%= f.label :receive_sms, 'Receive SMS alerts?' %>
   		</div>
-  		<div class="area_slots">
-    		<%= f.label :shirt_size %><br />
-    		<%= f.text_field :shirt_size %>
-  		</div>
-		</div>
+  				</div>
 		<div style="clear: both;" />
 		<div class="area_row">
   		<div class="area_slots">
@@ -61,14 +60,18 @@
 		</div>
 		<div style="clear: both;" />
 		<div class="area_row">
-  		<div class="area_slots">
-    		<%= f.label :organization %><br />
-    		<%= f.text_field :organization %>
-  		</div>
-  		<div class="area_slots">
-    		<%= f.label :level %><br />
-    		<%= f.text_field :level %>
-  		</div>
+  			<div class="area_slots">
+    				<%= f.label :organization %><br />
+    				<%= f.text_field :organization , { :size => 18 } %>
+  			</div>
+  			<div class="area_slots">
+    				<%= f.label :level %><br />
+    				<%= f.text_field :level , { :size => 17 } %>
+  			</div>
+			<div class="area_slots">
+    				<%= f.label :shirt_size %><br />
+    				<%= f.text_field :shirt_size, { :size => 17 } %>
+  			</div>
 		</div>
 		<div style="clear: both;" />
 	</div>

@@ -17,17 +17,22 @@
     </div>
   <% end %>
 
+ <div id="title">Add/Edit Conference</div>
  <div class="field">
     <%= f.label :name %><br />
-    <%= f.text_field :name %>
+    <%= f.text_field :name, :maxlength => 20 %>
   </div>
+	<br/>
   <div class="field">
-		<%= f.input :start_date, :as => :date %>
-	
+    <%= f.label :start_date %><br />
+		<%= f.text_field :start_date, :readonly => true  %>
   </div>
+	<br/>
   <div class="field">
-		<%= f.input :end_date, :as => :date %>
+    <%= f.label :end_date %><br />
+		<%= f.text_field :end_date, :readonly => true %>
   </div>
+	<br/>
   <div class="actions">
     <%= f.submit %>
   </div>
@@ -35,14 +40,16 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
+		$('#event_start_date').datepicker({ dateFormat: "yy-mm-dd" });	
+		$('#event_end_date').datepicker({ dateFormat: "yy-mm-dd" });	
+;
 		// Define the dateFormat for the datepicker
-	  $.datepicker._defaults.dateFormat = 'dd M yy';
+	  //$.datepicker._defaults.dateFormat = 'dd M yy';
 
 	  /**
 	  * Replaces the date or datetime field with jquey-ui datepicker
 		*/
-
-		$('.date, .datetime').each(function(i, el) {
+		/*$('.date, .datetime').each(function(i, el) {
 	 		var input = document.createElement('input');
 	 		$(input).attr({'type': 'text', 'class': 'ui-date-text'});
 	 		// Insert the input:text before the first select
@@ -63,29 +70,18 @@
  			}
 
 			$(input).datepicker();
-  	});
+  	});*/
 
 		/**
 		 * Sets the date for each select with the date selected with datepicker
 		 */
-		$('input.ui-date-text').live("change", function() {
+		/*$('input.ui-date-text').live("change", function() {
 	 		var sels = $(this).closest('.date, .datetime').find("select:lt(3)");
 			var d = $.datepicker.parseDate($.datepicker._defaults.dateFormat, $(this).val() );
 			$(sels[0]).val(d.getFullYear());
 			$(sels[1]).val(d.getMonth() + 1);
 	 		$(sels[2]).val(d.getDate());
-	 	});
-
-	 	/*$('input.ui-datepicker').datepicker();
-		//$('#event_end_date').datepicker({ disabled: true });
-		$('#event_start_date').datepicker({
-			onClose: function(dateText, inst) {
-				if ($('#event_start_date').text != "") { 
-					$('#event_end_date').datepicker( "option", "minDate", new Date ($('#event_start_date').text) );
-					//$('#event_end_date').datepicker();
-				}
-			}
-		});*/	
+	 	});*/
 	});
 </script>
  

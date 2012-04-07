@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120221183250) do
+ActiveRecord::Schema.define(:version => 20120405032944) do
 
   create_table "areas", :force => true do |t|
     t.string   "name"
@@ -135,6 +135,7 @@ ActiveRecord::Schema.define(:version => 20120221183250) do
     t.integer  "user_id"
     t.boolean  "sms_alerts"
     t.boolean  "email_alerts"
+    t.boolean  "receive_sms"
   end
 
 end

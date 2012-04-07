@@ -5,10 +5,10 @@
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= javascript_include_tag "jquery.easytabs.min.js" %>
-	<%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" %>
+  <%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" %>
   <%= stylesheet_link_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/cupertino/jquery-ui.css" %>	
   <%= csrf_meta_tags %>
-	<%= stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Magra' %> 
+  <%= stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Magra' %> 
 </head>
 <body>
 	<div id="container">
@@ -24,9 +24,12 @@
 					<!--<%= link_to "Sign in", '/#tabs1-dash'%> </span>-->
 					<%= link_to "Sign in", new_user_session_path %></span>
 			<% end %>
+			<div style="display: inline-block; position: absolute; left: 500px; color: white; font-size: 30px; white-space: nowrap;">Locksport International</div>
 		</div>
-		<div style="float: right; position: relative; top: 2.5em; padding-right: 5px;">
-			<%= image_tag "CougarWare_Logo_red.png", :size => "300x100" %>
+		<div style="float: right; position: relative; top: 1.em; padding-right: 5px;">
+			<!--%= image_tag "CougarWare_Logo_red.png", :size => "300x100" %-->
+			<%= image_tag "li_white.png", :size => "100x90" %>
+
 		</div>
 		<div style="clear: both;"></div>
 

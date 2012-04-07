@@ -33,7 +33,7 @@ body {
 #container {
  	width: 910px;
 	height: 100%;
- 	margin: 1.0em auto 0px;
+ 	margin: 1.7em auto 0px;
 }
 
 #footer {
@@ -46,19 +46,27 @@ body {
 	/*background: url(" http://static3.grsites.com/archive/textures/ss/ss143.gif") repeat scroll 50% 0 #39414A;*/
 	background: url("http://static.jquery.com/files/rocker/images/bg_home_content.gif") repeat-x scroll 50% 0 #39414A;
 	background-size: 100% 100%;
-	padding: 1px 5px 4em 15px;
+	padding: 1px 5px 2em 15px;
 	color: white;
 	height: 100%;
+	border-bottom-left-radius: 25px;
+	border-bottom-right-radius: 25px;
 }
 
 
 fieldset {
-	padding: 20px 5px 5px 5px;
+	padding: 5px 5px 15px 5px;
 	color: black;
 	background-image: url('http://static.jquery.com/files/rocker/images/bg_subtleGrayGrad.gif');
 	background-repeat: repeat-x;
 	background-size: 100% 100%;
 	background-position: 0px 20px;
+	border-radius: 25px;
+	border-color: transparent;
+}
+
+#title {
+	display: none;
 }
 
 h3, h2, h1 {
@@ -162,6 +170,25 @@ div.center {
 	font-size: 24px;
 }
 
+div.center_image {
+	vertical-align: middle;
+	margin-top: 1em;
+	display: inline-block;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+div.center_image_tag {
+	vertical-align: top; 
+	padding-top: 1.8em; 
+	padding-right: .5em;
+	display: inline-block;
+	color: white;
+	font-size: 15px;
+}
+
 .sign_in_home {
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
@@ -238,3 +265,7 @@ input[type=number] {
 	box-shadow: none !important;
 	margin: 3px 0px 0px 0px !important;
 }*/
+
+#error_explanation, .alert, .notice {
+	color: red !important;
+}

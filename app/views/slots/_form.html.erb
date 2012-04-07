@@ -21,18 +21,18 @@
 	<div class="field">
 		<%= f.label :start_time %>
 		<br/>
-  	<%= f.time_select :start_time, {:minute_step => 5, :ampm => true} %> 
+  	<%= f.time_select :start_time, {:default => Time.now.beginning_of_day + 8.hours, :minute_step => 5, :ampm => true} %> 
 	</div>
 	<br/>
 	<div class="field">
 		<%= f.label :end_time %>
 		<br/>
-		<%= f.time_select :end_time, {:minute_step => 5, :ampm => true} %>
+		<%= f.time_select :end_time, {:default => Time.now.beginning_of_day + 22.hours, :minute_step => 5, :ampm => true} %>
 	</div>
 	<br/>
 
 	<div class="field">
-		<%= f.label :required_shifts %>
+		<%= f.label :required_shifts, 'Minimum shifts' %>
 		<br/>
 		<%= f.text_field :required_shifts, :size => "5" %>
 	</div>
