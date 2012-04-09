@@ -1,11 +1,65 @@
 class ShiftValidator < ActiveModel::Validator
-	def validate(record)
-		other_shifts = Shift.where(:slot_id => record.slot_id)
+	def validate(shift)  
+		old_shift = ''
 
-		unless other_shifts.blank?
-			record.errors[:base] << "This volunteer is already registered for this slot."
+		begin
+			old_shift = Shift.find(shift.id)
+		rescue
+			return
 		end
+
+		if shift.volunteer_id.blank?
+			return
+		end
+
+		if old_shift.volunteer_id == shift.volunteer_id
+			return
+		end
+
+		volunteer = Volunteer.find(shift.volunteer_id)
+		slot = shift.slot	
+
+		other_shifts_local = Shift.where(:slot_id => slot.id, :volunteer_id => volunteer.id)
+		
+		unless other_shifts_local.blank?
+			other_shifts_local.each do |other_shift|
+				if other_shift.id != shift.id
+					shift.errors[:base] << make_first_shift_error(slot)					
+					return
+				end
+			end
+		end
+
+		other_shifts_global = Shift.where(:volunteer_id => volunteer.id)
+		other_slots = Array.new	
+
+		unless other_shifts_global.blank?
+			other_shifts_global.each do |other_shift|
+				if (((other_shift.slot.start_date == slot.start_date) &&
+						(other_shift.id != shift.id) &&
+						(slot.start_time.between?(other_shift.slot.start_time, other_shift.slot.end_time))) ||				
+						(slot.end_time.between?(other_shift.slot.start_time, other_shift.slot.end_time)))		
+					shift.errors[:base] << make_other_shift_error(slot, other_shift.slot)
+					return
+				end
+			end
+		end	
 	end
+
+	def make_first_shift_error(slot)
+		#shift_time = slot.start_time.strftime("%I:%M%p") + ' to ' + slot.end_time.strftime("%I:%M%p") 
+		#shift_date = slot.start_date.strftime("%A, %b %d %Y")
+		return 'this volunteer is already registered for this same slot.'
+	end
+
+	def make_other_shift_error(slot, other_slot)
+		shift_time = slot.start_time.strftime("%I:%M%p") + ' to ' + slot.end_time.strftime("%I:%M%p") 
+		shift_date = slot.start_date.strftime("%A, %b %d %Y")
+
+		other_shift_time = other_slot.start_time.strftime("%I:%M%p") + ' to ' + other_slot.end_time.strftime("%I:%M%p") 
+		other_shift_date = other_slot.start_date.strftime("%A, %b %d %Y")
+			return 'this shift is overlapping with a shift you are already registered for on ' +other_shift_date + ' from ' + other_shift_time + '.'
+	end 
 end
 
 
@@ -14,6 +68,7 @@ class Shift < ActiveRecord::Base
 	has_one :volunteer
 	validates_uniqueness_of :slot_id, :scope => :volunteer_id,
 													:unless => Proc.new {|shift| shift.volunteer_id.blank?}
+	validates_with ShiftValidator
 
 	#validates_with ShiftValidator
 	include ApplicationHelper

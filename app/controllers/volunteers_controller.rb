@@ -44,8 +44,7 @@ class VolunteersController < ApplicationController
 	def availability
 		@volunteer = current_user.volunteer
 		@event = Event.find(params[:event_id])
-		@volunteer_event = @volunteer.volunteer_events.find(:first,
-												:conditions => {:event_id => @event.id})
+		@volunteer_event = @volunteer.volunteer_events.find(:first, :conditions => {:event_id => @event.id})
 		@avails = @volunteer_event.avails
 
 		@villages = @event.villages
@@ -53,11 +52,12 @@ class VolunteersController < ApplicationController
 	
 		@avails_array = Array.new
 
+		@notice_array = session[:notice_array]
+		session[:notice_array] = nil
+
 		(0 .. @num_days).each do |i|
 			j = ActiveSupport::JSON
-			temp = @avails.find(:all, 
-											 :conditions => {
-											 :event_date => @event.start_date + i})
+			temp = @avails.find(:all, :conditions => { :event_date => @event.start_date + i} )
 			@avails_array << (j.encode(temp))
 		end		
 

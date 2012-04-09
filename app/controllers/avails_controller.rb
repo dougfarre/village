@@ -1,7 +1,64 @@
 class AvailsController < ApplicationController
 
-
+	def shift_notice(slot)
+		shift_time = slot.start_time.strftime("%I:%M%p") + ' to ' + slot.end_time.strftime("%I:%M%p") 
+		shift_date = slot.start_date.strftime("%A, %b %d %Y")
+		return "The shift on " + shift_date + " from " + shift_time + ' '
+	end
+ 
 	def save_volunteers_to_area
+		shifts = params[:shifts]
+		remove_shifts = params[:removed_shifts].split(',').uniq
+		volunteer = current_user.volunteer
+		volunteer_event = VolunteerEvent.find(params[:volunteer_event_id])
+		notice_array = Array.new
+		remove = 'has been successfully removed.'
+		no_remove = 'could not be removed because: '
+		add = 'has been successfully added to your schedule.'
+		no_add = 'could not be added becasue: '
+
+
+		if shifts.blank? && remove_shifts.blank?
+			send_to(:back, "No shifts selected or removed.")
+			return
+		end
+		
+		unless shifts.blank?
+			remove_shifts = remove_shifts - (shifts & remove_shifts)	
+		end
+
+		unless remove_shifts.blank?
+			remove_shifts.each do |remove_shift|
+				current_shift = Shift.find(remove_shift)
+				unless current_shift.blank?
+					current_shift.volunteer_id = ''
+					if current_shift.save
+						notice_array.push(shift_notice(current_shift.slot) +  remove)
+					else
+						notice_array.push(shift_notice(current_shift.slot) +  no_remove + current_shift.errors.full_messages[0])
+					end
+				end
+			end
+		end
+
+		unless shifts.blank?
+			shifts.each do |shift|
+				current_shift =	Shift.find(shift)
+				unless current_shift.volunteer_id == current_user.volunteer.id
+					current_shift.volunteer_id = current_user.volunteer.id
+					if current_shift.save
+						notice_array.push(shift_notice(current_shift.slot) + add)
+					else
+   					notice_array.push(shift_notice(current_shift.slot) + no_add + current_shift.errors.full_messages[0])
+					end
+				end
+			end	
+		end	
+
+		session[:notice_array] = notice_array
+		send_to(:back, '')
+		
+=begin
 		volunteer = current_user.volunteer
 		volunteer_event = VolunteerEvent.find(params[:volunteer_event_id])
 		area_ids = params[:areas]		
@@ -9,13 +66,14 @@ class AvailsController < ApplicationController
 
 		volunteer_event.area_ids = area_ids
 		volunteer_event.save!
-
-		respond_to do |format|
-      format.html { redirect_to availability_path(:event_id => params[:event_id]), :method => 'get',  :notice => "Availability saved!"}
-    end
-
+=end
 	end
 
+	def send_to(location, notice)
+		respond_to do |format|
+      format.html { redirect_to location, notice:  notice.to_s }
+    end
+	end
 
   # GET /avails/1, GET /avails/1.json
   def show

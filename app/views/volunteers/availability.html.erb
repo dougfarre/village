@@ -2,84 +2,122 @@
   <h2><%= "Availability for #{@volunteer.nick_name} at #{@event.name} on #{@event.start_date}" %></h2>
 </p>
 
+<div class="error">
+	<% unless @notice_array.blank? %>
+		<ol>
+			<% @notice_array.each do |notice| %>
+				<li><%= notice %></li>
+			<% end %>
+		</ol>
+	<% end %>
+</div>
+
 <%= form_tag(save_volunteers_to_area_path) do %>
-<%= hidden_field_tag :volunteer_event_id, @volunteer_event.id %>
-<%= hidden_field_tag :event_id, @event.id %>
-<div class="page">
-<fieldset>
-	<legend><h3>Time Slots</h3></legend>
-	<p>
-		<b>Select the village you are volunteering in:</b><br/>
-		<% if !@villages.blank? %>
-			<% @villages.each do |village| %>
-				<div class="local">
-  		  <% display = "#{village.name} Village" %>
-				<% is_checked = @volunteer_event.event.villages.include? village %>
-				<%= check_box_tag 'villages[]', village.id, is_checked %> 
-				<%= label_tag 'village', "#{display}" %>
-				<span class="local_toggle"></span>
-				<br/>
-				</div>
-			<% end %>
-		<% end %>
-	</p>
-	<p>
-		<b>Add the time slots you are NOT availabile during the conference</b>
-		<div class="area">
-		<% t_width = (730/(@num_days + 1)).to_i %>
-		<div class="area_row">
-			<% (0 .. @num_days).each do |i| %> 
-				<% current_date = @event.start_date + i %>
-				<% current_date_s = current_date.strftime("%A, %b %d %Y") %>
-				<% current_avail = ActiveSupport::JSON.decode(@avails_array[i]) %>
-				<div class="area_slots" style="width: <%= t_width %>px;">
-					<%= "#{current_date_s}" %> 
-					<ol style="margin-left: -20px;">
-						<% current_avail.each do |avail| %>
-							<% start_t = Time.parse(avail['start_time']).strftime("%I:%M%p") %>
-							<% end_t = Time.parse(avail['end_time']).strftime("%I:%M%p") %>
-							<% a_id = avail['id'] %>
-							<li>
-								<%= link_to "#{start_t} to #{end_t}", edit_avail_path(a_id), :remote => true %>
-							</li>
-						<% end %>
-						<li>
-							<%= link_to 'New Slot', new_avail_path(:current_date => current_date, :event_id => @event.id), :remote => true %>
-						</li>
-					</ol>
-				</div>
-			<% end %>
-		</div>
-	</div>
-</fieldset>
-<br/>
-<%= button_tag "Submit Availability" %>
-<br/>
-<span>(You can change your availability all the way up untill the day before the conference)</span> 
+	<%= hidden_field_tag :volunteer_event_id, @volunteer_event.id %>
+	<%= hidden_field_tag :nick_name, current_user.volunteer.nick_name %>
+	<%= hidden_field_tag :event_id, @event.id %>
+	<%= hidden_field_tag :removed_shifts, '' %>
+	<div class="page">
+		<% unless @event.villages.blank?	%>	
+			<% @event.villages.each do |village| %>
+				<% unless village.areas.blank? %>
+					<% i = 0 %>
+					<% village.areas.each do |area| %>
+						<% i += 1 %>
+						<fieldset>
+							<legend><h3 >
+							<%= "#{area.name} Area in the #{area.village.name} Village" %>
+							</h3></legend>
+							<div class="area">
+								<% if @volunteer_event.areas.include? area %>
+									<% slots_array = area.slots_array %>
+									<% num_days = area.num_days %>
+									<% t_width = (730/(num_days + 1)).to_i %>
+									<div class="area_row">
+										<% (0 .. num_days).each do |i| %> 
+											<% current_date = area.village.event.start_date + i %>
+											<% current_date_s = current_date.strftime("%A, %b %d %Y") %>
+											<% current_slot = ActiveSupport::JSON.decode(slots_array[i])%>
+											<div class="area_slots" style="width: <%= t_width %>px;">
+												<%= "#{current_date_s}" %> 
+												<ol style="margin-left: -20px;">
+													<% current_slot.each do |slot| %>
+														<% start_t = Time.parse(slot['start_time']).strftime("%I:%M%p") %>
+														<% end_t = Time.parse(slot['end_time']).strftime("%I:%M%p") %>
+														<% s_id = slot['id'] %>
+														<li>
+															<%= "#{start_t} to #{end_t}" %>
+															<% shifts = Shift.where(:slot_id => slot['id']) %>
+															<% unless shifts.blank? %>
+																<ul style="margin-left: -20px;">
+																	<% shifts.each do |shift| %>
+																		<li style="font-size: 75%;">
+																			<% if shift.volunteer_id.blank? %>
+																				<%= check_box_tag 'shifts[]', shift.id %> 
+																			<% end %>
+																			<% if shift.volunteer_id == current_user.volunteer.id %>
+																				<%= check_box_tag 'shifts[]', shift.id, true %> 
+																			<% end %>
+																			<span>
+																				<% unless shift.title.blank? %>
+																					<%= "#{shift.title}: " %>
+																				<% end %>
+																				<% unless shift.volunteer_id.blank? %>
+																				<% vol = Volunteer.find(shift.volunteer_id) %>
+																					<%= "#{vol.nick_name}" %>	
+																				<% end %> <!-- end shift.volunteer_id.blank? -->
+																			</span>
+																		</li>
+																	<% end %> <!-- end of shifts.each -->
+																</ul>
+															<% end %> <!-- end of shifts.blank? -->
+														</li>
+													<% end %> <!-- end of current_slot.each -->
+												</ol>
+											</div> <!-- end of div.area_slots -->
+										<% end %> <!-- end num_days.each -->
+									</div> <!-- end div.area_row -->	
+								<% else %>
+									<span style="color: red">You have not yet been assigned to work in this area</span>
+								<% end %>
+							</div><!-- end of div.area -->
+						</fieldset>
+					<% end %> <!-- end of areas.each -->			
+				<% end %> <!-- end village.areas.blank? -->
+			<% end %> <!-- end of villlages.each -->
+		<% end  %> <!-- end of event.village.blank? -->
+
+		<br/>
+		<%= button_tag "Submit Availability" %>
+		<br/>
+		<span>(You can change your availability all the way up untill the day before the conference)</span> 
+	</div><!-- end of div.page -->
 <% end %>
+
 <br/>
 <%= link_to 'Back', volunteer_dashboard_path %>
-<div id="temp_area"></div>
 
 <script style="text/javascript">
 	$(document).ready( function() {
-		activate_ajax("Update/Add");
-
-		$(':checkbox').change( function (e) {
+		$(':checkbox').change(function (e) {
 			if ($(e.target).is(':checked') == true) {
-				get_areas(this);
+				var nick_name = $('#nick_name').val();
+				$(e.target).closest('ul').find('*').not(this).attr('disabled', true);
+				$(e.target).siblings('span').append('<b>' + nick_name + '</b>');
 			} 
 			else {
-				var $div = $(this).siblings('.local_toggle');
-				$div.hide();
+				var content = $(e.target).siblings('span').text();
+				$(e.target).closest('ul').find('*').removeAttr('disabled');
+				$(e.target).siblings('span').text(content.split(':')[0] + ':');
+				var val = $(e.target).val() + ',' + $('#removed_shifts').val();
+				$('#removed_shifts').val(val);
 			}
 		});
 
 		$(':checkbox').each(function () {
 			if ($(this).is(':checked') == true) {
-				get_areas(this);
-			}
-		});
+				$(this).closest('ul').find('*').not(this).attr('disabled', true);
+		}});
 	});
 
 	function get_areas(caller) {
@@ -90,6 +128,5 @@
 		});
 		$div.show();
 	}
-
 </script>
 
