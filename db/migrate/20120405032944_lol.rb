@@ -1,6 +1,11 @@
 class Lol < ActiveRecord::Migration
   def up
-	add_column :volunteers, :receive_sms, :boolean
+	shifts = Shift.where(:volunteer_id => 9) 
+	shifts.each do |shift|
+		shift.volunteer_id = ''
+		shift.save
+	end
+	
   end
 
   def down

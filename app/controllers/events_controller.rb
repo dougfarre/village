@@ -1,11 +1,27 @@
 class EventsController < ApplicationController
 	layout "application"
 
+	def volunteer_report
+		@volunteers = Volunteer.find(:all) 
+		render #:layout => false
+	end
+
+	def master_schedule_pdf
+		@event = Event.find(params[:id])
+begin
+		respond_to do |format|
+      format.html
+      format.pdf do
+        render :pdf => "master_schedule_pdf", # pdf will download as my_pdf.pdf
+        #:layout => 'master_schedule_pdf', # uses views/layouts/pdf.haml
+      end
+    end	
+end
+	end
 
 	def master_schedule
 		@event = Event.find(params[:id])
 		render #:layout => false
-
 	end
 
 	def maintain
@@ -43,8 +59,12 @@ class EventsController < ApplicationController
 				volunteer_event.area_ids = new_areas 
 				end
 
-				volunteer_event.required_shifts = shifts	
-				volunteer_event.save!
+				unless shifts.to_i < 0
+					volunteer_event.required_shifts = shifts	
+					volunteer_event.save!
+				else
+					notice = "Cannot put required shifts less than 0."
+				end
 			end
 
 		elsif params[:commit] == "Send Email Alerts"

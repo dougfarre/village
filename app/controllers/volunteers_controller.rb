@@ -54,6 +54,12 @@ class VolunteersController < ApplicationController
 
 		@notice_array = session[:notice_array]
 		session[:notice_array] = nil
+		
+		@is_active = true
+
+		if Date.today > @event.start_date
+			@is_active = false
+		end
 
 		(0 .. @num_days).each do |i|
 			j = ActiveSupport::JSON
@@ -89,19 +95,22 @@ class VolunteersController < ApplicationController
 
 	def save_volunteers
 		event = Event.find(session[:event_id])
-
-		params[:volunteers].each do |new_volunteer_id|	
-			if !(event.volunteer_ids.include? new_volunteer_id.to_i)
-				new_volunteer = Volunteer.find(new_volunteer_id.to_i) 
-		 		event.volunteers << new_volunteer
-				UserMailer.add_alert(new_volunteer, event).deliver!
+		notice = "Nothing done."
+		
+		unless params[:volunteers].blank?	
+			params[:volunteers].each do |new_volunteer_id|	
+				if !(event.volunteer_ids.include? new_volunteer_id.to_i)
+					new_volunteer = Volunteer.find(new_volunteer_id.to_i) 
+		 			event.volunteers << new_volunteer
+					UserMailer.add_alert(new_volunteer, event).deliver!
+				end
 			end
+			notice = "Volunteers added."
+			event.save
 		end
 
-		event.save
-
 		respond_to do |format|
-      format.html { redirect_to event_path(event.id) }
+      format.html { redirect_to event_path(event.id), notice: notice }
       format.json { head :no_content }
     end
 	end

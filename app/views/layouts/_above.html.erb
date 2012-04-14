@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Vms</title>
+  <title>Conference Manager</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= javascript_include_tag "jquery.easytabs.min.js" %>
@@ -16,7 +16,7 @@
 			<br/>
 			<br/>
 			<% if user_signed_in? %>
-				<span class="white"> Signed in as <%= current_user.email %></span>
+				<span class="white"> Signed in as <%= link_to current_user.email, edit_user_registration_path %></span>
 				<span class="white"> Not you? <%= link_to "Sign out", destroy_user_session_path, :method => :delete %></span>
 			<% else %>
 				<span class="white"> 

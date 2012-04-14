@@ -35,10 +35,11 @@ class ShiftValidator < ActiveModel::Validator
 
 		unless other_shifts_global.blank?
 			other_shifts_global.each do |other_shift|
-				if (((other_shift.slot.start_date == slot.start_date) &&
-						(other_shift.id != shift.id) &&
-						(slot.start_time.between?(other_shift.slot.start_time, other_shift.slot.end_time))) ||				
-						(slot.end_time.between?(other_shift.slot.start_time, other_shift.slot.end_time)))		
+				range = other_shift.slot.start_time..other_shift.slot.end_time
+				if (
+						((other_shift.slot.start_date == slot.start_date) && (other_shift.id != shift.id)) &&
+						(slot.start_time === range ||	slot.end_time === range)
+					 )
 					shift.errors[:base] << make_other_shift_error(slot, other_shift.slot)
 					return
 				end
@@ -49,7 +50,7 @@ class ShiftValidator < ActiveModel::Validator
 	def make_first_shift_error(slot)
 		#shift_time = slot.start_time.strftime("%I:%M%p") + ' to ' + slot.end_time.strftime("%I:%M%p") 
 		#shift_date = slot.start_date.strftime("%A, %b %d %Y")
-		return 'this volunteer is already registered for this same slot.'
+		return 'this volunteer is already registered for this same time slot in the same area.'
 	end
 
 	def make_other_shift_error(slot, other_slot)
@@ -58,7 +59,7 @@ class ShiftValidator < ActiveModel::Validator
 
 		other_shift_time = other_slot.start_time.strftime("%I:%M%p") + ' to ' + other_slot.end_time.strftime("%I:%M%p") 
 		other_shift_date = other_slot.start_date.strftime("%A, %b %d %Y")
-			return 'this shift is overlapping with a shift you are already registered for on ' +other_shift_date + ' from ' + other_shift_time + '.'
+		return 'it interferes with another shift from <u>' + other_shift_time + '</u> in the <u>' + other_slot.area.name + ' Area.</u>' 
 	end 
 end
 

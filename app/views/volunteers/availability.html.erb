@@ -6,7 +6,7 @@
 	<% unless @notice_array.blank? %>
 		<ol>
 			<% @notice_array.each do |notice| %>
-				<li><%= notice %></li>
+				<li><%= raw notice %></li>
 			<% end %>
 		</ol>
 	<% end %>
@@ -17,6 +17,7 @@
 	<%= hidden_field_tag :nick_name, current_user.volunteer.nick_name %>
 	<%= hidden_field_tag :event_id, @event.id %>
 	<%= hidden_field_tag :removed_shifts, '' %>
+	<%= hidden_field_tag :is_active, @is_active %>
 	<div class="page">
 		<% unless @event.villages.blank?	%>	
 			<% @event.villages.each do |village| %>
@@ -85,12 +86,14 @@
 					<% end %> <!-- end of areas.each -->			
 				<% end %> <!-- end village.areas.blank? -->
 			<% end %> <!-- end of villlages.each -->
+		<% else %>
+			<p> This Conference has no Villages yet. </p>
 		<% end  %> <!-- end of event.village.blank? -->
 
 		<br/>
 		<%= button_tag "Submit Availability" %>
 		<br/>
-		<span>(You can change your availability all the way up untill the day before the conference)</span> 
+		<span id="signup_message"></span> 
 	</div><!-- end of div.page -->
 <% end %>
 
@@ -102,12 +105,12 @@
 		$(':checkbox').change(function (e) {
 			if ($(e.target).is(':checked') == true) {
 				var nick_name = $('#nick_name').val();
-				$(e.target).closest('ul').find('*').not(this).attr('disabled', true);
+				$(e.target).closest('ul').find('input').not(this).attr('disabled', true);
 				$(e.target).siblings('span').append('<b>' + nick_name + '</b>');
 			} 
 			else {
 				var content = $(e.target).siblings('span').text();
-				$(e.target).closest('ul').find('*').removeAttr('disabled');
+				$(e.target).closest('ul').find('input').removeAttr('disabled');
 				$(e.target).siblings('span').text(content.split(':')[0] + ':');
 				var val = $(e.target).val() + ',' + $('#removed_shifts').val();
 				$('#removed_shifts').val(val);
@@ -116,8 +119,17 @@
 
 		$(':checkbox').each(function () {
 			if ($(this).is(':checked') == true) {
-				$(this).closest('ul').find('*').not(this).attr('disabled', true);
+				$(this).closest('ul').find('input').not(this).attr('disabled', true);
 		}});
+		
+		if ($('#is_active').val() == 'false') {
+			$('#signup_message').text('(Sign up for this event is now closed.)');
+			$('#signup_message').css('color', 'red');
+			$('button').attr('disabled', 'disabled');
+		}	else {
+			$('#signup_message').text('(You can sign up all the way until the start date of the conference.)');
+			$('#signup_message').css('color', 'white');
+		}
 	});
 
 	function get_areas(caller) {

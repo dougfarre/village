@@ -1,12 +1,23 @@
 class Volunteer < ActiveRecord::Base
 	has_many :volunteer_events, :dependent => :destroy
-	has_many :events, :through => :volunteer_events, :dependent => :delete_all
+	has_many :events, :through => :volunteer_events, :dependent => :destroy
 	belongs_to :user
-	belongs_to :shift
+	belongs_to :shift, :dependent => :destroy
 	validates_presence_of :first_name, :last_name, :nick_name, :phone, :email
+		
+	before_destroy {|record| record.delete_shift_associations}
 
 	require 'rubygems'
 	require 'twilio-ruby'
+
+	def delete_shift_associations
+		shifts = Shift.where(:volunteer_id => self.id)
+	
+		shifts.each do |shift|
+			shift.volunteer_id = ''
+			shift.save
+		end
+	end
 
 	def self.valid_volunteers_for_area(slot)
 		volunteers = Array.new

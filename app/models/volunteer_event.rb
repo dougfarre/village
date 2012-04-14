@@ -2,7 +2,7 @@ class VolunteerEvent < ActiveRecord::Base
 	belongs_to :event
 	belongs_to :volunteer
 	has_and_belongs_to_many :areas
-	has_many :avails
+	has_many :avails, :dependent => :destroy 
 
 	before_save :default_values
 

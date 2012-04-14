@@ -1,0 +1,50 @@
+<h2> Master Volunteer List</h2>
+
+<div class="page">
+					<fieldset>
+						<legend></legend>
+<br/>
+<table>
+<tr>
+   <th>First name</th>
+   <th>Last name</th>
+   <th>Nick name</th>
+   <th>Email</th>
+   <th>Phone</th>
+   <th>Shirt size</th>
+   <th>City</th>
+   <th>State</th>
+   <th>Organization</th>
+   <th>Level</th>
+   <th></th>
+   <th></th>
+   <th></th>
+ </tr>
+
+
+
+
+<% @volunteers.each do |volunteer| %>  
+<tr>
+<td><%= volunteer.first_name %></td>    
+<td><%= volunteer.last_name %></td>
+<td><%= volunteer.nick_name %></td>
+<td><%=volunteer.email %></td>  
+<td><%= volunteer.phone %></td>
+<td><%= volunteer.shirt_size %></td>
+<td><%= volunteer.city %></td>
+<td><%= volunteer.state %></td>
+<td><%= volunteer.organization %></td>
+<td><%= volunteer.level %></td>
+</tr>
+<% end %>
+
+</table> 
+</div>
+</fieldset>
+<br/>
+<%= link_to 'Back', :back %>
+
+<script type='text/javascript'>
+	$('table tr:odd').css('background', 'white');
+</script>

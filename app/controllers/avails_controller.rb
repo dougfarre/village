@@ -1,22 +1,29 @@
 class AvailsController < ApplicationController
 
-	def shift_notice(slot)
+	def shift_notice(slot, red)
 		shift_time = slot.start_time.strftime("%I:%M%p") + ' to ' + slot.end_time.strftime("%I:%M%p") 
 		shift_date = slot.start_date.strftime("%A, %b %d %Y")
-		return "The shift on " + shift_date + " from " + shift_time + ' '
+		msg = '<span>The shift on <u>' + shift_date + '</u> from <u>' + shift_time + '</u> in the <u>' + slot.area.name + ' Area</u> '
+		return_val = msg 
+
+		if red == true
+			return_val = '<span style="color: red;">' + msg 
+		end
+
+		return return_val	
 	end
  
 	def save_volunteers_to_area
 		shifts = params[:shifts]
 		remove_shifts = params[:removed_shifts].split(',').uniq
 		volunteer = current_user.volunteer
-		volunteer_event = VolunteerEvent.find(params[:volunteer_event_id])
+		#volunteer_event = VolunteerEvent.find(params[:volunteer_event_id])
 		notice_array = Array.new
 		remove = 'has been successfully removed.'
-		no_remove = 'could not be removed because: '
-		add = 'has been successfully added to your schedule.'
-		no_add = 'could not be added becasue: '
-
+		no_remove = 'could not be removed because '
+		add = 'has been successfully added.'
+		no_add = 'could not be added becasue '
+		es = '</span>'
 
 		if shifts.blank? && remove_shifts.blank?
 			send_to(:back, "No shifts selected or removed.")
@@ -33,9 +40,9 @@ class AvailsController < ApplicationController
 				unless current_shift.blank?
 					current_shift.volunteer_id = ''
 					if current_shift.save
-						notice_array.push(shift_notice(current_shift.slot) +  remove)
+						notice_array.push(shift_notice(current_shift.slot, false) +  remove + es)
 					else
-						notice_array.push(shift_notice(current_shift.slot) +  no_remove + current_shift.errors.full_messages[0])
+						notice_array.push(shift_notice(current_shift.slot, true) +  no_remove + current_shift.errors.full_messages[0] + es)
 					end
 				end
 			end
@@ -44,12 +51,12 @@ class AvailsController < ApplicationController
 		unless shifts.blank?
 			shifts.each do |shift|
 				current_shift =	Shift.find(shift)
-				unless current_shift.volunteer_id == current_user.volunteer.id
-					current_shift.volunteer_id = current_user.volunteer.id
+				unless current_shift.volunteer_id == volunteer.id
+					current_shift.volunteer_id = volunteer.id
 					if current_shift.save
-						notice_array.push(shift_notice(current_shift.slot) + add)
+						notice_array.push(shift_notice(current_shift.slot, false) + add + es)
 					else
-   					notice_array.push(shift_notice(current_shift.slot) + no_add + current_shift.errors.full_messages[0])
+   					notice_array.push(shift_notice(current_shift.slot, true) + no_add + current_shift.errors.full_messages[0] + es)
 					end
 				end
 			end	
@@ -57,16 +64,6 @@ class AvailsController < ApplicationController
 
 		session[:notice_array] = notice_array
 		send_to(:back, '')
-		
-=begin
-		volunteer = current_user.volunteer
-		volunteer_event = VolunteerEvent.find(params[:volunteer_event_id])
-		area_ids = params[:areas]		
-		volunteer_event.areas.delete_all
-
-		volunteer_event.area_ids = area_ids
-		volunteer_event.save!
-=end
 	end
 
 	def send_to(location, notice)

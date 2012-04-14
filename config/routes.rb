@@ -6,6 +6,10 @@ Vms::Application.routes.draw do
 	match '/slots/import_shifts_function', :to => 'slots#import_shift_function', :as => 'import_shift_function'
 
 	match '/events/master_schedule', :to => 'events#master_schedule', :as => 'master_schedule'
+
+	match '/events/master_schedule_pdf', :to => 'events#master_schedule_pdf', :as => 'master_schedule_pdf'
+
+	match '/events/volunteer_report', :to => 'events#volunteer_report', :as => 'volunteer_report'
 	
 	match '/events/maintain', :to => 'events#maintain', :as => 'maintain'
 
