@@ -81,7 +81,7 @@
 
 							<div class="generic_slots"> <!-- availability -->
 								<% unless is_blank %>
-									<% unless Avail.find(:all, :conditions => {:volunteer_event_id => volunteer_e.id}).blank? %>
+									<% if Avail.find(:all, :conditions => {:volunteer_event_id => volunteer_e.id}) %>
 										Yes 
 									<% else %> 
 										No 

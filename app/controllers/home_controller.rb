@@ -2,8 +2,13 @@ class HomeController < ApplicationController
 	skip_before_filter :authenticate_user!
 
   def index
-		respond_to do |format|
-			format.html {render :layout => 'home_layout' }
+		if current_user
+			redirect_to '/users/sign_in'
+			return
+		else
+			respond_to do |format|
+				format.html 
+			end
 		end
   end
 

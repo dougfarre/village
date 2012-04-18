@@ -242,7 +242,7 @@ input[type=text]:focus, select:focus, input[type=email]:focus, input[type=number
 }
 
 input[type=number] {
-	width: 15px !important;
+	width: 25px !important;
 	margin-top: 3px !important;
 	box-shadow: none !important;
 	margin: 3px 0px 0px 0px !important;
@@ -269,3 +269,5 @@ input[type=number] {
 #error_explanation, .alert, .notice {
 	color: red !important;
 }
+
+

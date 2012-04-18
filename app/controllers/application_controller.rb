@@ -2,7 +2,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 	before_filter :authenticate_user!
 	before_filter :mailer_set_url_options
-	layout "application"
+	#layout "application"
+	layout :layout 
 
  	def mailer_set_url_options
 		ActionMailer::Base.default_url_options[:host] = request.host_with_port
@@ -34,7 +35,14 @@ class ApplicationController < ActionController::Base
   	#is_a?(Devise::SessionsController) ? false : "application"
   	#is_a?(Devise::RegistrationsController) ? false : "application"
 	  # or turn layout off for every devise controller:
-	  devise_controller? && "application"
+	  #devise_controller? && "application"
+	  #devise_controller? && "home_layout"
+
+		if devise_controller? && current_user 
+			return false	
+		else
+			return 'application'
+		end
   end
 
 end

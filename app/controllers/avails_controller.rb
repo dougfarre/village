@@ -17,7 +17,7 @@ class AvailsController < ApplicationController
 		shifts = params[:shifts]
 		remove_shifts = params[:removed_shifts].split(',').uniq
 		volunteer = current_user.volunteer
-		#volunteer_event = VolunteerEvent.find(params[:volunteer_event_id])
+		volunteer_event = VolunteerEvent.find(params[:volunteer_event_id])
 		notice_array = Array.new
 		remove = 'has been successfully removed.'
 		no_remove = 'could not be removed because '
@@ -61,6 +61,13 @@ class AvailsController < ApplicationController
 				end
 			end	
 		end	
+
+		
+		if volunteer_event.required_shifts < shifts.length
+			notice_array.push('<span style="color: red;>You have not signed up for enough shifts.</span>')
+		elsif volunteer_event.required_shifts > shifts.length
+			notice_array.push('<span style="color: blue;>You have signed up for too many shifts, you may want to remove some.</span>')
+		end
 
 		session[:notice_array] = notice_array
 		send_to(:back, '')

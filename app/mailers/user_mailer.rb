@@ -1,15 +1,15 @@
 class UserMailer < ActionMailer::Base
 	include SendGrid
 	sendgrid_enable :ganalytics, :opentrack
-  default from: "Village Manager <vms@vms.com>"
+  default from: "Conference Manager <vms@vms.com>"
 
 
 	def registration_alert(email, event)
 		@event = event
-		@url = 'http://usdos.us/users/sign_up'
+		@url = 'http://129.7.138.217/users/sign_up'
 
 		mail( :to => email,
-          :subject => @event.name + ': registeer to volunteer!') do |format|
+          :subject => @event.name + ': register to volunteer!') do |format|
       format.html
     end
 	end
@@ -19,7 +19,7 @@ class UserMailer < ActionMailer::Base
 		@event = event
 		@volunteer = volunteer
 
-		@url = 'http://usdos.us/users/sign_in'
+		@url = 'http://129.7.138.217/users/sign_in'
 		mail( :to => @volunteer.email,
           :subject => @event.name + ': you have been signed up to volunteer!') do |format|
       format.html
@@ -30,7 +30,7 @@ class UserMailer < ActionMailer::Base
 	def update_alert(volunteer, event)
 		@event = event
 		@volunteer = volunteer
-		@url = 'http://usdos.us/users/sign_in'
+		@url = 'http://129.7.138.217/users/sign_in'
 
 		mail( :to => @volunteer.email,
           :subject => @event.name + ': important update') do |format|
@@ -49,7 +49,7 @@ class UserMailer < ActionMailer::Base
 
 		unless email.blank?
 			mail( :to => email,
-					  :from => "vsmmaster@usdos.us",
+					  :from => "vsmmaster@129.7.138.217",
           	:subject => @shift.slot.area.village.event.name + ': your shift is starting soon!') do |format|
       	format.html
 			end

@@ -27,7 +27,7 @@
 					<% end %>	
 					<%= form_tag(associate_event_path) do %>
 						<%= label :event_id, 'Enter new event id here: ' %>
-						<%= number_field_tag :event_id %>
+						<%= number_field_tag :event_id, nil, :max => 10000 %>
 						<%= button_tag "Associate Event" %>
 					<% end %>
 			</fieldset>
