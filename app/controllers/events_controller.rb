@@ -12,7 +12,7 @@ begin
 		respond_to do |format|
       format.html
       format.pdf do
-        render :pdf => "master_schedule_pdf", # pdf will download as my_pdf.pdf
+        render :pdf => "master_schedule_pdf" # pdf will download as my_pdf.pdf
         #:layout => 'master_schedule_pdf', # uses views/layouts/pdf.haml
       end
     end	
