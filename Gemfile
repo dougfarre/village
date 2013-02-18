@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.0.rc1'
+gem 'rails'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -13,7 +13,7 @@ gem 'sqlite3'
 gem 'therubyracer'
 gem 'event-calendar', :require => 'event_calendar'
 gem 'calendar_date_select', :git => 'git://github.com/paneq/calendar_date_select.git'
-gem 'formtastic'
+gem 'formtastic', '2.0.2'
 gem 'csv-mapper'
 gem 'carrierwave'
 gem 'nested_form'
