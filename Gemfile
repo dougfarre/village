@@ -10,7 +10,7 @@ gem 'sqlite3'
 # Newly added
 #gem 'pg'
 #gem 'execjs'
-gem 'therubyracer'
+#gem 'therubyracer'
 gem 'event-calendar', :require => 'event_calendar'
 gem 'calendar_date_select', :git => 'git://github.com/paneq/calendar_date_select.git'
 gem 'formtastic', '2.0.2'
