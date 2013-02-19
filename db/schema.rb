@@ -36,23 +36,6 @@ ActiveRecord::Schema.define(:version => 20120405032944) do
     t.datetime "updated_at",         :null => false
   end
 
-  create_table "calendar_events", :force => true do |t|
-    t.string   "name"
-    t.datetime "start_at"
-    t.datetime "end_at"
-    t.boolean  "all_day",    :default => false
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
-  end
-
-  create_table "calender_events", :force => true do |t|
-    t.string   "name"
-    t.datetime "start_at"
-    t.datetime "end_at"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "data_files", :force => true do |t|
     t.string   "filename"
     t.string   "content_type"
@@ -70,11 +53,6 @@ ActiveRecord::Schema.define(:version => 20120405032944) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "user_id"
-  end
-
-  create_table "events_volunteers", :id => false, :force => true do |t|
-    t.integer "event_id"
-    t.integer "volunteer_id"
   end
 
   create_table "shifts", :force => true do |t|
@@ -157,7 +135,6 @@ ActiveRecord::Schema.define(:version => 20120405032944) do
     t.integer  "user_id"
     t.boolean  "sms_alerts"
     t.boolean  "email_alerts"
-    t.boolean  "receive_sms"
   end
 
 end
